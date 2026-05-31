@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.kirillvodu.dorogame.game.application.services.PublicInvitationServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-05-30T22:25:50.814Z" hostname="DESKTOP-C2BB2F2" time="0.132">
+  <properties/>
+  <testcase name="acceptPublicInvitation_createsAndReturnsGame()" classname="ru.kirillvodu.dorogame.game.application.services.PublicInvitationServiceTest" time="0.094"/>
+  <testcase name="createPublicInvitation_savesAndReturnsInvitation()" classname="ru.kirillvodu.dorogame.game.application.services.PublicInvitationServiceTest" time="0.021"/>
+  <testcase name="acceptPublicInvitation_invitationNotFound_throwsObjectNotFoundException()" classname="ru.kirillvodu.dorogame.game.application.services.PublicInvitationServiceTest" time="0.002"/>
+  <testcase name="getAllPublicInvitations_returnsOnlyPublicOnes()" classname="ru.kirillvodu.dorogame.game.application.services.PublicInvitationServiceTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

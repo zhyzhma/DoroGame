@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.kirillvodu.dorogame.user.presentation.controllers.UserControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-05-30T22:09:26.014Z" hostname="DESKTOP-C2BB2F2" time="1.001">
+  <properties/>
+  <testcase name="getById_found_returnsUser()" classname="ru.kirillvodu.dorogame.user.presentation.controllers.UserControllerTest" time="0.853"/>
+  <testcase name="getById_notFound_returns404()" classname="ru.kirillvodu.dorogame.user.presentation.controllers.UserControllerTest" time="0.039"/>
+  <testcase name="register_createsUserAndReturnsDto()" classname="ru.kirillvodu.dorogame.user.presentation.controllers.UserControllerTest" time="0.105"/>
+  <system-out><![CDATA[01:09:17.381 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+01:09:17.386 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+01:09:17.394 [Test worker] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 1.20.4
+01:09:17.581 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+01:09:17.961 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+01:09:17.964 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+01:09:17.992 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 26.0.0
+  API Version: 1.45
+  Operating System: Docker Desktop
+  Total Memory: 7793 MB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+01:09:18.061 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Creating container for image: testcontainers/ryuk:0.11.0
+01:09:18.203 [Test worker] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+01:09:18.364 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Container testcontainers/ryuk:0.11.0 is starting: e9f4991b7fe7db24f78afd7b2c01386e98060c9913c369832ee4a41662a80e18
+01:09:18.797 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Container testcontainers/ryuk:0.11.0 started in PT0.7362227S
+01:09:18.806 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+01:09:18.807 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+01:09:18.807 [Test worker] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+01:09:18.808 [Test worker] INFO tc.postgres:16-alpine -- Creating container for image: postgres:16-alpine
+01:09:18.872 [Test worker] INFO tc.postgres:16-alpine -- Container postgres:16-alpine is starting: 0df65c9e04757d64c934da29309d422f81410d9c33a4cb88b328b0e06512615c
+01:09:20.441 [Test worker] INFO tc.postgres:16-alpine -- Container postgres:16-alpine started in PT1.6333819S
+01:09:20.441 [Test worker] INFO tc.postgres:16-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:56268/userdb_test?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2026-05-31T01:09:20.860+03:00  INFO 26104 --- [user-service] [    Test worker] r.k.d.u.p.c.UserControllerTest           : Starting UserControllerTest using Java 21.0.7 with PID 26104 (started by kirill in C:\Users\kirill\DoroGameJava\user-service)
+2026-05-31T01:09:20.862+03:00  INFO 26104 --- [user-service] [    Test worker] r.k.d.u.p.c.UserControllerTest           : No active profile set, falling back to 1 default profile: "default"
+2026-05-31T01:09:21.810+03:00  INFO 26104 --- [user-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-31T01:09:21.875+03:00  INFO 26104 --- [user-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 1 JPA repository interface.
+2026-05-31T01:09:22.500+03:00  INFO 26104 --- [user-service] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-31T01:09:22.589+03:00  INFO 26104 --- [user-service] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2026-05-31T01:09:22.634+03:00  INFO 26104 --- [user-service] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-31T01:09:22.973+03:00  INFO 26104 --- [user-service] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-31T01:09:23.013+03:00  INFO 26104 --- [user-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-31T01:09:23.200+03:00  INFO 26104 --- [user-service] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@59043741
+2026-05-31T01:09:23.201+03:00  INFO 26104 --- [user-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-31T01:09:23.264+03:00  INFO 26104 --- [user-service] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.13
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-31T01:09:24.168+03:00  INFO 26104 --- [user-service] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-31T01:09:24.238+03:00  INFO 26104 --- [user-service] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-31T01:09:24.882+03:00  WARN 26104 --- [user-service] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-31T01:09:25.353+03:00  INFO 26104 --- [user-service] [    Test worker] g.s.a.GrpcServerFactoryAutoConfiguration : Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2026-05-31T01:09:25.627+03:00  INFO 26104 --- [user-service] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-05-31T01:09:25.628+03:00  INFO 26104 --- [user-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-05-31T01:09:25.630+03:00  INFO 26104 --- [user-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-05-31T01:09:25.775+03:00  INFO 26104 --- [user-service] [    Test worker] n.d.b.g.s.s.AbstractGrpcServerFactory    : Registered gRPC service: UserGrpcService, bean: userGrpcServiceImpl, class: ru.kirillvodu.dorogame.user.presentation.grpc.UserGrpcServiceImpl
+2026-05-31T01:09:25.775+03:00  INFO 26104 --- [user-service] [    Test worker] n.d.b.g.s.s.AbstractGrpcServerFactory    : Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
+2026-05-31T01:09:25.776+03:00  INFO 26104 --- [user-service] [    Test worker] n.d.b.g.s.s.AbstractGrpcServerFactory    : Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
+2026-05-31T01:09:25.980+03:00  INFO 26104 --- [user-service] [    Test worker] n.d.b.g.s.s.GrpcServerLifecycle          : gRPC Server started, listening on address: *, port: 43222
+2026-05-31T01:09:25.996+03:00  INFO 26104 --- [user-service] [    Test worker] r.k.d.u.p.c.UserControllerTest           : Started UserControllerTest in 5.509 seconds (process running for 9.95)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

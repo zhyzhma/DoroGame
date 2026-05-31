@@ -1,0 +1,5 @@
+rootProject.name = 'dorogame'
+
+include 'user-service'
+include 'game-service'
+include 'stats-service'

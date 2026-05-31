@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: game-service-test
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+grpc:
+  client:
+    user-service:
+      address: static://localhost:9090
+      negotiation-type: plaintext
+
+game:
+  starting:
+    player1:
+      - x: 0
+        y: 0
+      - x: 0
+        y: 1
+      - x: 0
+        y: 4
+      - x: 0
+        y: 5
+    player2:
+      - x: 8
+        y: 0
+      - x: 8
+        y: 1
+      - x: 8
+        y: 4
+      - x: 8
+        y: 5
