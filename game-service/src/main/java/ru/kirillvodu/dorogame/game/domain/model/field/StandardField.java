@@ -2,11 +2,17 @@ package ru.kirillvodu.dorogame.game.domain.model.field;
 
 import ru.kirillvodu.dorogame.game.domain.model.Coords;
 import ru.kirillvodu.dorogame.game.domain.model.Player;
+import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StandardField implements Field {
+
+    @Override
+    public FieldVariant getFieldVariant() {
+        return FieldVariant.STANDARD;
+    }
 
     @Override
     public boolean areCoordsValid(Coords coords) {

@@ -52,34 +52,34 @@ public class DoroGameEntity extends BaseEntity {
     @Column(name = "turn", nullable = false)
     private int turn;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "game_chips_player1", joinColumns = @JoinColumn(name = "game_id"))
-    private List<ChipEmbeddable> chipsPlayer1;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "game_id", nullable = false)
+    private List<ChipEntity> chipsPlayer1;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "game_chips_player2", joinColumns = @JoinColumn(name = "game_id"))
-    private List<ChipEmbeddable> chipsPlayer2;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "game_id", nullable = false)
+    private List<ChipEntity> chipsPlayer2;
 
     public DoroGame toDomain(Field field, WinChecker winChecker) {
         UserReadModel p1 = new UserReadModel(player1Id, player1Name);
         UserReadModel p2 = new UserReadModel(player2Id, player2Name);
 
         List<Chip> chips1 = chipsPlayer1.stream()
-                .map(c -> new Chip(c.getChipId(), new Coords(c.getCoordX(), c.getCoordY())))
+                .map(c -> new Chip(c.getId(), new Coords(c.getCoordX(), c.getCoordY())))
                 .toList();
         List<Chip> chips2 = chipsPlayer2.stream()
-                .map(c -> new Chip(c.getChipId(), new Coords(c.getCoordX(), c.getCoordY())))
+                .map(c -> new Chip(c.getId(), new Coords(c.getCoordX(), c.getCoordY())))
                 .toList();
 
         return new DoroGame(getId(), p1, p2, field, winChecker, chips1, chips2, turn, finished, winner);
     }
 
     public static DoroGameEntity fromDomain(DoroGame game) {
-        List<ChipEmbeddable> chips1 = game.getPlayer1().getChips().stream()
-                .map(c -> new ChipEmbeddable(c.getId(), c.getCoords().x(), c.getCoords().y()))
+        List<ChipEntity> chips1 = game.getPlayer1().getChips().stream()
+                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y()))
                 .toList();
-        List<ChipEmbeddable> chips2 = game.getPlayer2().getChips().stream()
-                .map(c -> new ChipEmbeddable(c.getId(), c.getCoords().x(), c.getCoords().y()))
+        List<ChipEntity> chips2 = game.getPlayer2().getChips().stream()
+                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y()))
                 .toList();
 
         DoroGameEntity entity = DoroGameEntity.builder()
@@ -87,10 +87,8 @@ public class DoroGameEntity extends BaseEntity {
                 .player1Name(game.getPlayer1().getUser().name())
                 .player2Id(game.getPlayer2().getUser().id())
                 .player2Name(game.getPlayer2().getUser().name())
-                .fieldVariant(game.getField() instanceof ru.kirillvodu.dorogame.game.domain.model.field.StandardField
-                        ? FieldVariant.STANDARD : FieldVariant.STANDARD)
-                .winCheckerVariant(game.getWinChecker() instanceof ru.kirillvodu.dorogame.game.domain.model.winchecker.StandardWinChecker
-                        ? WinCheckerVariant.STANDARD : WinCheckerVariant.STANDARD)
+                .fieldVariant(game.getField().getFieldVariant())
+                .winCheckerVariant(game.getWinChecker().getWinCheckerVariant())
                 .finished(game.isFinished())
                 .winner(game.getWinner())
                 .turn(game.getTurn())

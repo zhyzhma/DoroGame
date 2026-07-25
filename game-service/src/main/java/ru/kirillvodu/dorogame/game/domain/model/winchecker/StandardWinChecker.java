@@ -1,11 +1,17 @@
 package ru.kirillvodu.dorogame.game.domain.model.winchecker;
 
 import ru.kirillvodu.dorogame.game.domain.model.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class StandardWinChecker implements WinChecker {
+
+    @Override
+    public WinCheckerVariant getWinCheckerVariant() {
+        return WinCheckerVariant.STANDARD;
+    }
 
     @Override
     public boolean checkWin(List<Coords> coords) {

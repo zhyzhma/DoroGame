@@ -17,7 +17,7 @@ public class Chip {
     }
 
     public Chip(Coords coords) {
-        this.id = null;
+        this.id = UUID.randomUUID();
         this.coords = coords;
     }
 }
