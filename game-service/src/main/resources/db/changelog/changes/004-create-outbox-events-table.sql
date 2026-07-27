@@ -1,0 +1,10 @@
+CREATE TABLE outbox_events (
+    id UUID NOT NULL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    removed BOOLEAN NOT NULL DEFAULT FALSE,
+    event_type VARCHAR(255) NOT NULL,
+    aggregate_id VARCHAR(255) NOT NULL,
+    payload TEXT NOT NULL,
+    sent BOOLEAN NOT NULL DEFAULT FALSE
+);

@@ -1,0 +1,9 @@
+CREATE TABLE users (
+    id UUID NOT NULL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    removed BOOLEAN NOT NULL DEFAULT FALSE,
+    keycloak_id UUID NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    score INTEGER NOT NULL
+);

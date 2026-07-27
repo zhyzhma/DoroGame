@@ -4,6 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    parameters:
+      debeziumUser: ${DEBEZIUM_USER:user}
 
 grpc:
   client:

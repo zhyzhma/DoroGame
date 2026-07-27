@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="001-create-doro-games-table" author="kirillvodu">
+        <sqlFile path="changes/001-create-doro-games-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="002-create-chip-entity-table" author="kirillvodu">
+        <sqlFile path="changes/002-create-chip-entity-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="003-create-invitations-table" author="kirillvodu">
+        <sqlFile path="changes/003-create-invitations-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="004-create-outbox-events-table" author="kirillvodu">
+        <sqlFile path="changes/004-create-outbox-events-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="005-setup-debezium-replication-group" author="kirillvodu">
+        <sqlFile path="changes/005-setup-debezium-replication-group.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <rollback>
+            <sql>ALTER TABLE outbox_events OWNER TO CURRENT_USER;</sql>
+            <sql>DROP ROLE replication_group;</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -4,37 +4,49 @@ services:
     image: postgres:16
     container_name: postgres-user
     environment:
-      POSTGRES_DB: userdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${USER_POSTGRES_DB}
+      POSTGRES_USER: ${USER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USER_POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${USER_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${USER_APP_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres-user-data:/var/lib/postgresql/data
+      - ./user-service/docker/postgres/init-users.sh:/docker-entrypoint-initdb.d/init-users.sh:ro
 
   postgres-game:
     image: postgres:16
     container_name: postgres-game
+    command: ["postgres", "-c", "wal_level=logical"]
     environment:
-      POSTGRES_DB: gamedb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${GAME_POSTGRES_DB}
+      POSTGRES_USER: ${GAME_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${GAME_POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${GAME_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${GAME_APP_PASSWORD}
+      DEBEZIUM_USER: ${GAME_DEBEZIUM_USER}
+      DEBEZIUM_PASSWORD: ${GAME_DEBEZIUM_PASSWORD}
     ports:
       - "5433:5432"
     volumes:
       - postgres-game-data:/var/lib/postgresql/data
+      - ./game-service/docker/postgres/init-users.sh:/docker-entrypoint-initdb.d/init-users.sh:ro
 
   postgres-stats:
     image: postgres:16
     container_name: postgres-stats
     environment:
-      POSTGRES_DB: statsdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${STATS_POSTGRES_DB}
+      POSTGRES_USER: ${STATS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${STATS_POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${STATS_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${STATS_APP_PASSWORD}
     ports:
       - "5434:5432"
     volumes:
       - postgres-stats-data:/var/lib/postgresql/data
+      - ./stats-service/docker/postgres/init-users.sh:/docker-entrypoint-initdb.d/init-users.sh:ro
 
   kafka:
     image: apache/kafka:3.7.0
@@ -60,14 +72,72 @@ services:
       timeout: 10s
       retries: 20
       start_period: 30s
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8086:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: dorogame
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: debezium
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://kafka-connect:8083
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  kafka-connect:
+      image: debezium/connect:2.7.3.Final
+      depends_on:
+        kafka:
+          condition: service_healthy
+        postgres-game:
+          condition: service_healthy
+      environment:
+        BOOTSTRAP_SERVERS: kafka:9092
+        GROUP_ID: 1
+        CONFIG_STORAGE_TOPIC: dorogame_connect_configs
+        OFFSET_STORAGE_TOPIC: dorogame_connect_offsets
+        STATUS_STORAGE_TOPIC: dorogame_connect_status
+        KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+        VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+        CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+        CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+        DEBEZIUM_USER: ${GAME_DEBEZIUM_USER}
+        DEBEZIUM_PASSWORD: ${GAME_DEBEZIUM_PASSWORD}
+        POSTGRES_DB : ${GAME_POSTGRES_DB}
+        CONNECT_CONFIG_PROVIDERS: env
+        CONNECT_CONFIG_PROVIDERS_ENV_CLASS: org.apache.kafka.common.config.provider.EnvVarConfigProvider
+
+      ports:
+        - "8083:8083"
+      healthcheck:
+        test: [ "CMD-SHELL", "curl -fsS http://localhost:8083/connectors" ]
+        interval: 10s
+        timeout: 5s
+        retries: 15
+        start_period: 30s
+
+  connector_register:
+    image: curlimages/curl:8.10.1
+    depends_on:
+      kafka-connect:
+        condition: service_healthy
+    volumes:
+      - ./game-service/docker/debezium/connector-config.json:/connector-config.json:ro
+      - ./game-service/docker/debezium/register.sh:/register.sh:ro
+    environment:
+      CONNECT_URL: http://kafka-connect:8083
+      CONNECTOR_NAME: postgres-connector
+    entrypoint: [ "/bin/sh", "/register.sh" ]
+    restart: "no"
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.0
     container_name: keycloak_doro
     command: start-dev
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     ports:
       - "8085:8080"
     healthcheck:
@@ -90,8 +160,8 @@ services:
       - "9090:9090"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/userdb
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: ${USER_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${USER_APP_PASSWORD}
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/dorogame_realm
       KEYCLOAK_ADMIN_SERVER_URL: http://keycloak:8080
 
@@ -109,8 +179,9 @@ services:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-game:5432/gamedb
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: ${GAME_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${GAME_APP_PASSWORD}
+      DEBEZIUM_USER: ${GAME_DEBEZIUM_USER}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       GRPC_CLIENT_USER-SERVICE_ADDRESS: static://user-service:9090
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/dorogame_realm
@@ -127,10 +198,11 @@ services:
       - "8082:8082"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-stats:5432/statsdb
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: ${STATS_APP_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${STATS_APP_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/dorogame_realm
+
 
 volumes:
   postgres-user-data:

@@ -5,13 +5,17 @@ spring:
   application:
     name: game-service
   datasource:
-    url: jdbc:postgresql://localhost:5433/gamedb
-    username: user
-    password: password
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    parameters:
+      debeziumUser: ${DEBEZIUM_USER}
   kafka:
     bootstrap-servers: localhost:9092
     producer:

@@ -1,0 +1,31 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "plugin.name": "pgoutput",
+
+  "database.hostname": "postgres-game",
+  "database.port": "5432",
+  "database.user": "${env:DEBEZIUM_USER}",
+  "database.password": "${env:DEBEZIUM_PASSWORD}",
+  "database.dbname": "${env:POSTGRES_DB}",
+  "topic.prefix": "dorogame",
+
+  "table.include.list": "public.outbox_events",
+  "slot.name": "outbox_events_slot",
+  "publication.name": "outbox_events_pub",
+  "publication.autocreate.mode": "filtered",
+  "snapshot.mode": "initial",
+  "tombstones.on.delete": "false",
+
+  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter.schemas.enable": "false",
+  "value.converter.schemas.enable": "false",
+
+  "transforms": "outbox",
+  "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+  "transforms.outbox.table.field.event.id": "id",
+  "transforms.outbox.table.field.event.key": "aggregate_id",
+  "transforms.outbox.table.field.event.payload": "payload",
+  "transforms.outbox.route.by.field": "aggregate_type",
+  "transforms.outbox.route.topic.replacement": "orders.events.$${routedByValue}"
+}

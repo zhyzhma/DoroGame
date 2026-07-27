@@ -1,0 +1,45 @@
+postgres-game:
+image: postgres:16
+container_name: postgres-game
+environment:
+POSTGRES_DB: gamedb
+POSTGRES_USER: user
+POSTGRES_PASSWORD: password
+ports:
+- "5433:5432"
+volumes:
+- postgres-game-data:/var/lib/postgresql/data
+
+{
+  "name": "outbox-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+
+    "database.hostname": "postgres-game",
+    "database.port": "5432",
+    "database.user": "debezium",
+    "database.password": "debezium_password",
+    "database.dbname": "airport_db",
+    "topic.prefix": "airport",
+
+    "table.include.list": "public.outbox_event",
+    "slot.name": "outbox_event_slot",
+    "publication.name": "outbox_event_pub",
+    "snapshot.mode": "initial",
+    "tombstones.on.delete": "false",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.table.field.event.id": "id",
+    "transforms.outbox.table.field.event.key": "aggregate_id",
+    "transforms.outbox.table.field.event.payload": "payload",
+    "transforms.outbox.route.by.field": "aggregate_type",
+    "transforms.outbox.route.topic.replacement": "orders.events.${routedByValue}"
+  }
+}

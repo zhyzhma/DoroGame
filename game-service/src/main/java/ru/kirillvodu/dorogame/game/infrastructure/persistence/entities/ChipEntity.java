@@ -21,9 +21,13 @@ public class ChipEntity extends BaseEntity {
     @Column(name = "coord_y", nullable = false)
     private int coordY;
 
-    public ChipEntity(UUID id, int coordX, int coordY) {
+    @Column(name = "player_number", nullable = false)
+    private int playerNumber;
+
+    public ChipEntity(UUID id, int coordX, int coordY, int playerNumber) {
         this.setId(id);
         this.coordX = coordX;
         this.coordY = coordY;
+        this.playerNumber = playerNumber;
     }
 }

@@ -13,6 +13,7 @@ import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "doro_games")
@@ -54,20 +55,18 @@ public class DoroGameEntity extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "game_id", nullable = false)
-    private List<ChipEntity> chipsPlayer1;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "game_id", nullable = false)
-    private List<ChipEntity> chipsPlayer2;
+    private List<ChipEntity> chips;
 
     public DoroGame toDomain(Field field, WinChecker winChecker) {
         UserReadModel p1 = new UserReadModel(player1Id, player1Name);
         UserReadModel p2 = new UserReadModel(player2Id, player2Name);
 
-        List<Chip> chips1 = chipsPlayer1.stream()
+        List<Chip> chips1 = chips.stream()
+                .filter(c -> c.getPlayerNumber() == 1)
                 .map(c -> new Chip(c.getId(), new Coords(c.getCoordX(), c.getCoordY())))
                 .toList();
-        List<Chip> chips2 = chipsPlayer2.stream()
+        List<Chip> chips2 = chips.stream()
+                .filter(c -> c.getPlayerNumber() == 2)
                 .map(c -> new Chip(c.getId(), new Coords(c.getCoordX(), c.getCoordY())))
                 .toList();
 
@@ -76,10 +75,10 @@ public class DoroGameEntity extends BaseEntity {
 
     public static DoroGameEntity fromDomain(DoroGame game) {
         List<ChipEntity> chips1 = game.getPlayer1().getChips().stream()
-                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y()))
+                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y(), 1))
                 .toList();
         List<ChipEntity> chips2 = game.getPlayer2().getChips().stream()
-                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y()))
+                .map(c -> new ChipEntity(c.getId(), c.getCoords().x(), c.getCoords().y(), 2))
                 .toList();
 
         DoroGameEntity entity = DoroGameEntity.builder()
@@ -92,8 +91,7 @@ public class DoroGameEntity extends BaseEntity {
                 .finished(game.isFinished())
                 .winner(game.getWinner())
                 .turn(game.getTurn())
-                .chipsPlayer1(chips1)
-                .chipsPlayer2(chips2)
+                .chips(Stream.concat(chips1.stream(), chips2.stream()).toList())
                 .build();
 
         entity.setId(game.getId());

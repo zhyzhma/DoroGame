@@ -1,0 +1,10 @@
+CREATE TABLE player_stats (
+    id UUID NOT NULL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    removed BOOLEAN NOT NULL DEFAULT FALSE,
+    user_id UUID NOT NULL UNIQUE,
+    wins INTEGER NOT NULL,
+    losses INTEGER NOT NULL,
+    rating INTEGER NOT NULL
+);
