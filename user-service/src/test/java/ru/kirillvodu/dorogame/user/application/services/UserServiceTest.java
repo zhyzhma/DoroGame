@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.kirillvodu.dorogame.user.application.abstractions.identity.IdentityProvider;
 import ru.kirillvodu.dorogame.user.application.abstractions.repositories.UserRepository;
 import ru.kirillvodu.dorogame.user.application.exceptions.ObjectNotFoundException;
 import ru.kirillvodu.dorogame.user.domain.model.User;
@@ -23,18 +24,22 @@ import static org.mockito.Mockito.when;
 class UserServiceTest {
 
     @Mock private UserRepository userRepository;
+    @Mock private IdentityProvider identityProvider;
 
     @InjectMocks private UserService userService;
 
     @Test
     void register_savesUserWithZeroScore() {
-        User saved = new User(UUID.randomUUID(), "Alice", 0);
+        UUID keycloakId = UUID.randomUUID();
+        when(identityProvider.createUser("Alice", "password")).thenReturn(keycloakId.toString());
+        User saved = new User(keycloakId, "Alice", 0);
         when(userRepository.save(any(User.class))).thenReturn(saved);
 
-        User result = userService.register("Alice");
+        User result = userService.register("Alice", "password");
 
         assertThat(result.getName()).isEqualTo("Alice");
         assertThat(result.getScore()).isEqualTo(0);
+        verify(identityProvider).addRole(keycloakId.toString(), "PLAYER");
         verify(userRepository).save(any(User.class));
     }
 

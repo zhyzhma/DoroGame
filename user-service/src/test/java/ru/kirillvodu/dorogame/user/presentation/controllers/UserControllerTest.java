@@ -15,10 +15,10 @@ class UserControllerTest extends IntegrationTestBase {
     @Test
     void register_createsUserAndReturnsDto() throws Exception {
         String body = """
-                {"name": "Alice"}
+                {"name": "Alice", "password": "secret"}
                 """;
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isOk())
@@ -32,9 +32,9 @@ class UserControllerTest extends IntegrationTestBase {
     @Test
     void getById_found_returnsUser() throws Exception {
         String body = """
-                {"name": "Bob"}
+                {"name": "Bob", "password": "secret"}
                 """;
-        String response = mockMvc.perform(post("/users")
+        String response = mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andReturn().getResponse().getContentAsString();
