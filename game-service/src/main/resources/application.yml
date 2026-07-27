@@ -33,6 +33,12 @@ grpc:
       address: static://localhost:9090
       negotiation-type: plaintext
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
 game:
   starting:
     player1:

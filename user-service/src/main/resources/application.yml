@@ -31,3 +31,9 @@ keycloak:
     client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:dorogame_backend_api}
     username: ${KEYCLOAK_ADMIN_USERNAME:admin}
     password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
