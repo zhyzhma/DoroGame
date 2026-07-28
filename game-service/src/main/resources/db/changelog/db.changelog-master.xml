@@ -21,7 +21,7 @@
     </changeSet>
 
     <changeSet id="005-setup-debezium-replication-group" author="kirillvodu">
-        <sqlFile path="changes/005-setup-debezium-replication-group.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <sqlFile path="changes/005-setup-debezium-replication-group.sql" relativeToChangelogFile="true" splitStatements="false"/>
         <rollback>
             <sql>ALTER TABLE outbox_events OWNER TO CURRENT_USER;</sql>
             <sql>DROP ROLE replication_group;</sql>

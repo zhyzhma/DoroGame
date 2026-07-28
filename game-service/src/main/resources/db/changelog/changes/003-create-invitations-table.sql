@@ -1,4 +1,4 @@
-CREATE TABLE invitations (
+CREATE TABLE IF NOT EXISTS invitations (
     id UUID NOT NULL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,

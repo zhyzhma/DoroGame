@@ -32,6 +32,11 @@ services:
     volumes:
       - postgres-game-data:/var/lib/postgresql/data
       - ./game-service/docker/postgres/init-users.sh:/docker-entrypoint-initdb.d/init-users.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${GAME_POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   postgres-stats:
     image: postgres:16
@@ -134,18 +139,15 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.0
     container_name: keycloak_doro
-    command: start-dev
+    command: start-dev --import-realm
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     ports:
       - "8085:8080"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 60s
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
 
   user-service:
     build: ./user-service
@@ -154,7 +156,7 @@ services:
       postgres-user:
         condition: service_started
       keycloak:
-        condition: service_healthy
+        condition: service_started
     ports:
       - "8081:8081"
       - "9090:9090"
@@ -164,6 +166,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${USER_APP_PASSWORD}
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/dorogame_realm
       KEYCLOAK_ADMIN_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN_CLIENT_SECRET: ${KEYCLOAK_ADMIN_CLIENT_SECRET}
 
   game-service:
     build: ./game-service
@@ -208,3 +211,4 @@ volumes:
   postgres-user-data:
   postgres-game-data:
   postgres-stats-data:
+  keycloak-data:

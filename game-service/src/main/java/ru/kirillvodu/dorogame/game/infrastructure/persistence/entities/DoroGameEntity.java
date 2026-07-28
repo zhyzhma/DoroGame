@@ -24,6 +24,10 @@ import java.util.stream.Stream;
 @Builder
 public class DoroGameEntity extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     @Column(name = "player1_id", nullable = false)
     private UUID player1Id;
 

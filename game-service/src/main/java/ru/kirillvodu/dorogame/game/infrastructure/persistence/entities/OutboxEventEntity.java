@@ -3,6 +3,8 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "outbox_events")
 @Getter
@@ -11,6 +13,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class OutboxEventEntity extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "event_type", nullable = false)
     private String eventType;

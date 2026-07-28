@@ -29,8 +29,7 @@ keycloak:
     server-url: ${KEYCLOAK_ADMIN_SERVER_URL:http://localhost:8085}
     realm: ${KEYCLOAK_ADMIN_REALM:dorogame_realm}
     client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:dorogame_backend_api}
-    username: ${KEYCLOAK_ADMIN_USERNAME:admin}
-    password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET}
 
 springdoc:
   swagger-ui:

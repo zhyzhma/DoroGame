@@ -1,4 +1,4 @@
-CREATE TABLE player_stats (
+CREATE TABLE IF NOT EXISTS player_stats (
     id UUID NOT NULL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,

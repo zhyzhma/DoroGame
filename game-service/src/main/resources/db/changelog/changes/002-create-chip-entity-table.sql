@@ -1,4 +1,4 @@
-CREATE TABLE chip_entity (
+CREATE TABLE IF NOT EXISTS chip_entity (
     id UUID NOT NULL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
