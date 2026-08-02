@@ -3,6 +3,7 @@ package ru.kirillvodu.dorogame.game.application.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameEventPublisher;
+import ru.kirillvodu.dorogame.game.application.abstractions.events.GameUpdateNotifier;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
@@ -18,6 +19,8 @@ public class GameService {
     private DoroGameRepository doroGameRepository;
     @Autowired
     private GameEventPublisher gameEventPublisher;
+    @Autowired
+    private GameUpdateNotifier gameUpdateNotifier;
 
     public DoroGame getGame(UUID gameId) {
         return doroGameRepository.getById(gameId)
@@ -31,6 +34,8 @@ public class GameService {
         game.makeMove(command.playerId(), command.chipId(), command.coords());
 
         doroGameRepository.save(game);
+
+        gameUpdateNotifier.notifyGameUpdated(game);
 
         if (game.isFinished()) {
             gameEventPublisher.publishGameFinished(game);

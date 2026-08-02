@@ -178,6 +178,8 @@ services:
         condition: service_started
       user-service:
         condition: service_started
+      rabbitmq:
+        condition: service_started
     ports:
       - "8080:8080"
     environment:
@@ -205,6 +207,19 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${STATS_APP_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/dorogame_realm
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "61613:61613"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    command: >
+        bash -c "rabbitmq-plugins enable --offline rabbitmq_stomp rabbitmq_management &&
+                 rabbitmq-server"
 
 
 volumes:

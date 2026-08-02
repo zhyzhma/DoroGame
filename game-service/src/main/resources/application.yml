@@ -21,6 +21,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  rabbitmq:
+    user: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
   security:
     oauth2:
       resourceserver:
