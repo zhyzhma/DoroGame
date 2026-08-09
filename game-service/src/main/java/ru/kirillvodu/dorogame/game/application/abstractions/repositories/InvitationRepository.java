@@ -11,4 +11,5 @@ public interface InvitationRepository {
     Optional<Invitation> getById(UUID id);
     Invitation save(Invitation invitation);
     void deleteById(UUID id);
+    int atomicDeleteById(UUID id);
 }

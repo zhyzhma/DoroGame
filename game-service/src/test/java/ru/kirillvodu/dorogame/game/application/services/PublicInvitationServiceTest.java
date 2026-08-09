@@ -67,12 +67,13 @@ class PublicInvitationServiceTest {
         when(userServiceAbstraction.getById(acceptingUserId)).thenReturn(accepter);
         when(doroGameFactory.createDoroGame(accepter, invitation)).thenReturn(game);
         when(doroGameRepository.save(game)).thenReturn(game);
+        when(invitationRepository.atomicDeleteById(invitationId)).thenReturn(1);
 
         DoroGame result = publicInvitationService.acceptPublicInvitation(
                 new AcceptPublicInvitationCommand(invitationId, acceptingUserId));
 
         assertThat(result).isSameAs(game);
-        verify(invitationRepository).deleteById(invitationId);
+        verify(invitationRepository).atomicDeleteById(invitationId);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package ru.kirillvodu.dorogame.game.application.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
@@ -43,13 +44,23 @@ public class PublicInvitationService {
         Invitation invitation = invitationRepository.getById(command.invitationId())
                 .orElseThrow(() -> new ObjectNotFoundException(command.invitationId(), "Invitation"));
 
+        if (invitation.isPrivate()) {
+            throw new ObjectNotFoundException(command.invitationId(), "Invitation");
+        }
+
         UserReadModel acceptingUser = userServiceAbstraction.getById(command.acceptingUserId());
 
-        DoroGame game = doroGameFactory.createDoroGame(acceptingUser, invitation);
-        DoroGame savedGame = doroGameRepository.save(game);
+        return createGameAndDeleteInvitation(invitation, acceptingUser);
+    }
 
-        invitationRepository.deleteById(invitation.id());
+    @Transactional
+    private DoroGame createGameAndDeleteInvitation (Invitation invitation, UserReadModel inviter) {
+        int existed = invitationRepository.atomicDeleteById(invitation.id());
+        if (existed == 0) {
+            throw new ObjectNotFoundException(invitation.id(), "Invitation");
+        }
 
-        return savedGame;
+        DoroGame game = doroGameFactory.createDoroGame(inviter, invitation);
+        return doroGameRepository.save(game);
     }
 }

@@ -8,6 +8,9 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
     parameters:
       debeziumUser: ${DEBEZIUM_USER:user}
+  rabbitmq:
+    user: test
+    password: test
 
 grpc:
   client:

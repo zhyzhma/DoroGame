@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameEventPublisher;
+import ru.kirillvodu.dorogame.game.application.abstractions.events.GameUpdateNotifier;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
@@ -25,6 +26,7 @@ class GameServiceTest {
 
     @Mock private DoroGameRepository doroGameRepository;
     @Mock private GameEventPublisher gameEventPublisher;
+    @Mock private GameUpdateNotifier gameUpdateNotifier;
 
     @InjectMocks private GameService gameService;
 

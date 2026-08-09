@@ -43,4 +43,9 @@ public class InvitationRepositoryAdapter implements InvitationRepository {
             repository.save(e);
         });
     }
+
+    @Override
+    public int atomicDeleteById(UUID id) {
+        return repository.updateByRemovedFalse(id);
+    }
 }
