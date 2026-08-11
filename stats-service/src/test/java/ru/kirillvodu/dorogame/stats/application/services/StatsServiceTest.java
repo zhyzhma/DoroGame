@@ -30,7 +30,8 @@ class StatsServiceTest {
     @InjectMocks private StatsService statsService;
 
     @Test
-    void recordGameResult_newPlayers_createsInitialStatsAndRecordsResult() {
+    void recordGameResult_createsInitialStatsAndRecordsResult_whenPlayersNew() {
+        // Arrange
         UUID gameId = UUID.randomUUID();
         UUID winnerId = UUID.randomUUID();
         UUID loserId = UUID.randomUUID();
@@ -40,8 +41,10 @@ class StatsServiceTest {
         when(playerStatsRepository.getByUserId(loserId)).thenReturn(Optional.empty());
         when(playerStatsRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
+        // Act
         statsService.recordGameResult(gameId, winnerId, loserId);
 
+        // Assert
         ArgumentCaptor<PlayerStats> captor = ArgumentCaptor.forClass(PlayerStats.class);
         verify(playerStatsRepository, times(2)).save(captor.capture());
 
@@ -56,7 +59,8 @@ class StatsServiceTest {
     }
 
     @Test
-    void recordGameResult_existingPlayers_updatesStats() {
+    void recordGameResult_updatesStats_whenPlayersExisting() {
+        // Arrange
         UUID winnerId = UUID.randomUUID();
         UUID loserId = UUID.randomUUID();
         PlayerStats existingWinner = new PlayerStats(winnerId, 3, 1, 1075);
@@ -67,8 +71,10 @@ class StatsServiceTest {
         when(playerStatsRepository.getByUserId(loserId)).thenReturn(Optional.of(existingLoser));
         when(playerStatsRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
+        // Act
         statsService.recordGameResult(UUID.randomUUID(), winnerId, loserId);
 
+        // Assert
         assertThat(existingWinner.getWins()).isEqualTo(4);
         assertThat(existingWinner.getRating()).isEqualTo(1100);
         assertThat(existingLoser.getLosses()).isEqualTo(3);
@@ -76,27 +82,33 @@ class StatsServiceTest {
     }
 
     @Test
-    void getPlayerStats_found_returnsStats() {
+    void getPlayerStats_returnsStats_whenStatsFound() {
+        // Arrange
         UUID userId = UUID.randomUUID();
         PlayerStats stats = new PlayerStats(userId, 5, 2, 1125);
         when(playerStatsRepository.getByUserId(userId)).thenReturn(Optional.of(stats));
 
+        // Act
         PlayerStats result = statsService.getPlayerStats(userId);
 
+        // Assert
         assertThat(result.getUserId()).isEqualTo(userId);
         assertThat(result.getWins()).isEqualTo(5);
     }
 
     @Test
-    void getPlayerStats_notFound_throwsObjectNotFoundException() {
+    void getPlayerStats_throwsObjectNotFoundException_whenStatsNotFound() {
+        // Arrange
         UUID userId = UUID.randomUUID();
         when(playerStatsRepository.getByUserId(userId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ObjectNotFoundException.class, () -> statsService.getPlayerStats(userId));
     }
 
     @Test
-    void getGameHistory_returnsResultsForUser() {
+    void getGameHistory_returnsResultsForUser_whenResultsExist() {
+        // Arrange
         UUID userId = UUID.randomUUID();
         List<GameResult> results = List.of(
                 GameResult.create(UUID.randomUUID(), userId, UUID.randomUUID()),
@@ -104,8 +116,10 @@ class StatsServiceTest {
         );
         when(gameResultRepository.getByUserId(userId)).thenReturn(results);
 
+        // Act
         List<GameResult> result = statsService.getGameHistory(userId);
 
+        // Assert
         assertThat(result).hasSize(2);
     }
 }

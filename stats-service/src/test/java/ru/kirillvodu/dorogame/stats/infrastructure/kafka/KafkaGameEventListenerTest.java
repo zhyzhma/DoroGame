@@ -26,7 +26,8 @@ class KafkaGameEventListenerTest {
     }
 
     @Test
-    void onGameFinished_validMessage_callsRecordGameResult() throws Exception {
+    void onGameFinished_callsRecordGameResult_whenMessageValid() throws Exception {
+        // Arrange
         UUID gameId = UUID.randomUUID();
         UUID winnerId = UUID.randomUUID();
         UUID loserId = UUID.randomUUID();
@@ -35,26 +36,33 @@ class KafkaGameEventListenerTest {
                 new ru.kirillvodu.dorogame.stats.application.contracts.events.GameFinishedEvent(
                         gameId.toString(), winnerId.toString(), loserId.toString()));
 
+        // Act
         listener.onGameFinished(message);
 
+        // Assert
         verify(statsService).recordGameResult(gameId, winnerId, loserId);
     }
 
     @Test
-    void onGameFinished_invalidJson_doesNotThrow() {
+    void onGameFinished_doesNotThrow_whenJsonInvalid() {
+        // Arrange & Act
         listener.onGameFinished("not-valid-json");
 
+        // Assert
         verifyNoInteractions(statsService);
     }
 
     @Test
-    void onGameFinished_missingFields_doesNotThrow() throws Exception {
+    void onGameFinished_doesNotThrow_whenFieldsMissing() throws Exception {
+        // Arrange
         String message = objectMapper.writeValueAsString(
                 new ru.kirillvodu.dorogame.stats.application.contracts.events.GameFinishedEvent(
                         null, null, null));
 
+        // Act
         listener.onGameFinished(message);
 
+        // Assert
         verifyNoInteractions(statsService);
     }
 }

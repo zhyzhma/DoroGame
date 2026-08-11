@@ -31,6 +31,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${rabbitmq.password}")
     private String password;
 
+    @Value("${rabbitmq.relay-host:rabbitmq}")
+    private String relayHost;
+
+    @Value("${rabbitmq.relay-port:61613}")
+    private int relayPort;
+
     private GameAccessChecker gameAccessChecker;
 
     public WebSocketConfig(GameAccessChecker gameAccessChecker) {
@@ -45,8 +51,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableStompBrokerRelay("/topic")
-                .setRelayHost("rabbitmq")
-                .setRelayPort(61613)
+                .setRelayHost(relayHost)
+                .setRelayPort(relayPort)
                 .setClientLogin(user)
                 .setClientPasscode(password)
                 .setSystemLogin(user)
@@ -89,7 +95,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     private UUID extractGameId(String destination) {
-        String[] parts = destination.split("/");
+        String[] parts = destination.split("\\.");
         return UUID.fromString(parts[parts.length - 1]);
     }
 }

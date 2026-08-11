@@ -29,14 +29,17 @@ class UserServiceTest {
     @InjectMocks private UserService userService;
 
     @Test
-    void register_savesUserWithZeroScore() {
+    void register_savesUserWithZeroScore_whenRegistrationValid() {
+        // Arrange
         UUID keycloakId = UUID.randomUUID();
         when(identityProvider.createUser("Alice", "password")).thenReturn(keycloakId.toString());
         User saved = new User(keycloakId, "Alice", 0);
         when(userRepository.save(any(User.class))).thenReturn(saved);
 
+        // Act
         User result = userService.register("Alice", "password");
 
+        // Assert
         assertThat(result.getName()).isEqualTo("Alice");
         assertThat(result.getScore()).isEqualTo(0);
         verify(identityProvider).addRole(keycloakId.toString(), "PLAYER");
@@ -44,35 +47,43 @@ class UserServiceTest {
     }
 
     @Test
-    void getById_found_returnsUser() {
+    void getById_returnsUser_whenUserFound() {
+        // Arrange
         UUID id = UUID.randomUUID();
         User user = new User(id, "Bob", 100);
         when(userRepository.getById(id)).thenReturn(Optional.of(user));
 
+        // Act
         User result = userService.getById(id);
 
+        // Assert
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getName()).isEqualTo("Bob");
     }
 
     @Test
-    void getById_notFound_throwsObjectNotFoundException() {
+    void getById_throwsObjectNotFoundException_whenUserNotFound() {
+        // Arrange
         UUID id = UUID.randomUUID();
         when(userRepository.getById(id)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ObjectNotFoundException.class, () -> userService.getById(id));
     }
 
     @Test
-    void getByIds_returnsAllMatchingUsers() {
+    void getByIds_returnsAllMatchingUsers_whenIdsExist() {
+        // Arrange
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         List<UUID> ids = List.of(id1, id2);
         List<User> users = List.of(new User(id1, "A", 0), new User(id2, "B", 0));
         when(userRepository.getByIds(ids)).thenReturn(users);
 
+        // Act
         List<User> result = userService.getByIds(ids);
 
+        // Assert
         assertThat(result).hasSize(2);
     }
 }

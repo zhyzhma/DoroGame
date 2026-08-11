@@ -31,26 +31,32 @@ class GameServiceTest {
     @InjectMocks private GameService gameService;
 
     @Test
-    void getGame_found_returnsGame() {
+    void getGame_returnsGame_whenGameFound() {
+        // Arrange
         UUID id = UUID.randomUUID();
         DoroGame game = mock(DoroGame.class);
         when(doroGameRepository.getById(id)).thenReturn(Optional.of(game));
 
+        // Act
         DoroGame result = gameService.getGame(id);
 
+        // Assert
         assertThat(result).isSameAs(game);
     }
 
     @Test
-    void getGame_notFound_throwsObjectNotFoundException() {
+    void getGame_throwsObjectNotFoundException_whenGameNotFound() {
+        // Arrange
         UUID id = UUID.randomUUID();
         when(doroGameRepository.getById(id)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ObjectNotFoundException.class, () -> gameService.getGame(id));
     }
 
     @Test
-    void makeMove_notFinished_returnsMoveResultAndDoesNotPublish() {
+    void makeMove_returnsMoveResultWithoutPublishing_whenGameNotFinished() {
+        // Arrange
         UUID gameId = UUID.randomUUID();
         UUID playerId = UUID.randomUUID();
         UUID chipId = UUID.randomUUID();
@@ -61,8 +67,10 @@ class GameServiceTest {
         when(doroGameRepository.getById(gameId)).thenReturn(Optional.of(game));
         when(doroGameRepository.save(game)).thenReturn(game);
 
+        // Act
         MoveResult result = gameService.makeMove(new MakeMoveCommand(gameId, playerId, chipId, new Coords(1, 1)));
 
+        // Assert
         assertThat(result.finished()).isFalse();
         assertThat(result.turn()).isEqualTo(2);
         verify(game).makeMove(playerId, chipId, new Coords(1, 1));
@@ -71,7 +79,8 @@ class GameServiceTest {
     }
 
     @Test
-    void makeMove_gameFinished_publishesEvent() {
+    void makeMove_publishesGameFinishedEvent_whenGameFinished() {
+        // Arrange
         UUID gameId = UUID.randomUUID();
         DoroGame game = mock(DoroGame.class);
         when(game.isFinished()).thenReturn(true);
@@ -80,16 +89,20 @@ class GameServiceTest {
         when(doroGameRepository.getById(gameId)).thenReturn(Optional.of(game));
         when(doroGameRepository.save(game)).thenReturn(game);
 
+        // Act
         gameService.makeMove(new MakeMoveCommand(gameId, UUID.randomUUID(), UUID.randomUUID(), new Coords(1, 1)));
 
+        // Assert
         verify(gameEventPublisher).publishGameFinished(game);
     }
 
     @Test
-    void makeMove_gameNotFound_throwsObjectNotFoundException() {
+    void makeMove_throwsObjectNotFoundException_whenGameNotFound() {
+        // Arrange
         UUID gameId = UUID.randomUUID();
         when(doroGameRepository.getById(gameId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ObjectNotFoundException.class,
                 () -> gameService.makeMove(new MakeMoveCommand(gameId, UUID.randomUUID(), UUID.randomUUID(), new Coords(0, 0))));
     }

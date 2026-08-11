@@ -1,8 +1,16 @@
 package ru.kirillvodu.dorogame.game.presentation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.kirillvodu.dorogame.game.IntegrationTestBase;
+import ru.kirillvodu.dorogame.game.application.abstractions.security.CurrentUserProvider;
+import ru.kirillvodu.dorogame.game.application.abstractions.services.UserServiceAbstraction;
 import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
 
 import java.util.UUID;
@@ -16,8 +24,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class PublicInvitationControllerTest extends IntegrationTestBase {
 
+    @Autowired private MockMvc mockMvc;
+
+    @MockitoBean private UserServiceAbstraction userServiceAbstraction;
+    @MockitoBean private CurrentUserProvider currentUserProvider;
+
+    @BeforeEach
+    void setupCurrentUser() {
+        when(currentUserProvider.getCurrentUserId()).thenAnswer(invocation -> {
+            ServletRequestAttributes attrs =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            return UUID.fromString(attrs.getRequest().getHeader("X-User-Id"));
+        });
+    }
+
     @Test
-    void createPublicInvitation_returnsCreatedInvitation() throws Exception {
+    void createPublicInvitation_returnsCreatedInvitation_whenRequestValid() throws Exception {
+        // Arrange
         UUID userId = UUID.randomUUID();
         when(userServiceAbstraction.getById(userId))
                 .thenReturn(new UserReadModel(userId, "TestPlayer"));
@@ -30,7 +53,8 @@ class PublicInvitationControllerTest extends IntegrationTestBase {
                 }
                 """;
 
-        mockMvc.perform(post("/invitations/public")
+        // Act & Assert
+        mockMvc.perform(authed(post("/invitations/public"))
                         .header("X-User-Id", userId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -42,15 +66,17 @@ class PublicInvitationControllerTest extends IntegrationTestBase {
     }
 
     @Test
-    void getAllPublicInvitations_returnsEmptyList_whenNoneExist() throws Exception {
-        mockMvc.perform(get("/invitations/public"))
+    void getAllPublicInvitations_returnsEmptyList_whenNoInvitationsExist() throws Exception {
+        // Arrange & Act & Assert
+        mockMvc.perform(authed(get("/invitations/public")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test
-    void getAllPublicInvitations_returnsInvitations_whenExist() throws Exception {
+    void getAllPublicInvitations_returnsInvitations_whenInvitationsExist() throws Exception {
+        // Arrange
         UUID userId = UUID.randomUUID();
         when(userServiceAbstraction.getById(userId))
                 .thenReturn(new UserReadModel(userId, "Player"));
@@ -58,13 +84,29 @@ class PublicInvitationControllerTest extends IntegrationTestBase {
         String body = """
                 {"fieldVariant":"STANDARD","winCheckerVariant":"STANDARD","turn":1}
                 """;
-        mockMvc.perform(post("/invitations/public")
+        mockMvc.perform(authed(post("/invitations/public"))
                         .header("X-User-Id", userId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body));
 
-        mockMvc.perform(get("/invitations/public"))
+        // Act & Assert
+        mockMvc.perform(authed(get("/invitations/public")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void createPublicInvitation_returns401_whenTokenMissing() throws Exception {
+        // Arrange
+        String body = """
+                {"fieldVariant":"STANDARD","winCheckerVariant":"STANDARD","turn":1}
+                """;
+
+        // Act & Assert
+        mockMvc.perform(post("/invitations/public")
+                        .header("X-User-Id", UUID.randomUUID().toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isUnauthorized());
     }
 }

@@ -50,67 +50,83 @@ class DoroGameTest {
     }
 
     @Test
-    void makeMove_success_switchesTurn() {
+    void makeMove_switchesTurn_whenMoveValid() {
+        // Arrange
         DoroGame game = createGame();
 
+        // Act
         game.makeMove(PLAYER1_ID, chip1Id, new Coords(1, 0));
 
+        // Assert
         assertThat(game.getTurn()).isEqualTo(2);
         assertThat(game.isFinished()).isFalse();
     }
 
     @Test
-    void makeMove_wrongPlayer_throwsIllegalStateException() {
+    void makeMove_throwsIllegalStateException_whenWrongPlayerTurn() {
+        // Arrange
         DoroGame game = createGame();
 
+        // Act & Assert
         assertThrows(IllegalStateException.class,
                 () -> game.makeMove(PLAYER2_ID, chip1Id, new Coords(1, 0)));
     }
 
     @Test
-    void makeMove_gameAlreadyFinished_throwsIllegalStateException() {
+    void makeMove_throwsIllegalStateException_whenGameAlreadyFinished() {
+        // Arrange
         when(winChecker.checkWin(any())).thenReturn(true);
         DoroGame game = createGame();
         game.makeMove(PLAYER1_ID, chip1Id, new Coords(1, 0));
 
+        // Act & Assert
         assertThrows(IllegalStateException.class,
                 () -> game.makeMove(PLAYER1_ID, chip1Id, new Coords(2, 0)));
     }
 
     @Test
-    void makeMove_invalidCoords_throwsIllegalArgumentException() {
+    void makeMove_throwsIllegalArgumentException_whenCoordsInvalid() {
+        // Arrange
         when(field.areCoordsValid(any())).thenReturn(false);
         DoroGame game = createGame();
 
+        // Act & Assert
         assertThrows(IllegalArgumentException.class,
                 () -> game.makeMove(PLAYER1_ID, chip1Id, new Coords(-1, -1)));
     }
 
     @Test
-    void makeMove_occupiedCell_throwsIllegalStateException() {
+    void makeMove_throwsIllegalStateException_whenCellOccupied() {
+        // Arrange
         DoroGame game = createGame();
 
+        // Act & Assert
         assertThrows(IllegalStateException.class,
                 () -> game.makeMove(PLAYER1_ID, chip1Id, new Coords(8, 0)));
     }
 
     @Test
-    void makeMove_player1Wins_setsFinishedAndWinner() {
+    void makeMove_setsFinishedAndWinner_whenPlayer1Wins() {
+        // Arrange
         when(winChecker.checkWin(any())).thenReturn(true);
         DoroGame game = createGame();
 
+        // Act
         game.makeMove(PLAYER1_ID, chip1Id, new Coords(1, 0));
 
+        // Assert
         assertThat(game.isFinished()).isTrue();
         assertThat(game.getWinner()).isEqualTo(1);
         assertThat(game.getTurn()).isEqualTo(0);
     }
 
     @Test
-    void constructor_invalidTurn_throwsIllegalArgumentException() {
+    void constructor_throwsIllegalArgumentException_whenTurnInvalid() {
+        // Arrange
         UserReadModel p1 = new UserReadModel(PLAYER1_ID, "P1");
         UserReadModel p2 = new UserReadModel(PLAYER2_ID, "P2");
 
+        // Act & Assert
         assertThrows(IllegalArgumentException.class,
                 () -> new DoroGame(p1, p2, field, winChecker, List.of(), List.of(), 3));
     }

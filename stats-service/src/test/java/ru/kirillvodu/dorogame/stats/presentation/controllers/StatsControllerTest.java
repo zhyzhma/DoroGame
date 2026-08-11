@@ -1,6 +1,8 @@
 package ru.kirillvodu.dorogame.stats.presentation.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import ru.kirillvodu.dorogame.stats.IntegrationTestBase;
 import ru.kirillvodu.dorogame.stats.infrastructure.persistence.entities.GameResultEntity;
 import ru.kirillvodu.dorogame.stats.infrastructure.persistence.entities.PlayerStatsEntity;
@@ -14,8 +16,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class StatsControllerTest extends IntegrationTestBase {
 
+    @Autowired private MockMvc mockMvc;
+
     @Test
-    void getStats_found_returnsPlayerStats() throws Exception {
+    void getStats_returnsPlayerStats_whenStatsFound() throws Exception {
+        // Arrange
         UUID userId = UUID.randomUUID();
         PlayerStatsEntity entity = PlayerStatsEntity.builder()
                 .userId(userId)
@@ -25,7 +30,8 @@ class StatsControllerTest extends IntegrationTestBase {
                 .build();
         playerStatsRepository.save(entity);
 
-        mockMvc.perform(get("/stats/{userId}", userId))
+        // Act & Assert
+        mockMvc.perform(authed(get("/stats/{userId}", userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(userId.toString()))
                 .andExpect(jsonPath("$.wins").value(5))
@@ -34,13 +40,15 @@ class StatsControllerTest extends IntegrationTestBase {
     }
 
     @Test
-    void getStats_notFound_returns404() throws Exception {
-        mockMvc.perform(get("/stats/{userId}", UUID.randomUUID()))
+    void getStats_returns404_whenStatsNotFound() throws Exception {
+        // Arrange & Act & Assert
+        mockMvc.perform(authed(get("/stats/{userId}", UUID.randomUUID())))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void getHistory_returnsGameResults() throws Exception {
+    void getHistory_returnsGameResults_whenResultsExist() throws Exception {
+        // Arrange
         UUID userId = UUID.randomUUID();
         GameResultEntity result = GameResultEntity.builder()
                 .gameId(UUID.randomUUID())
@@ -50,16 +58,25 @@ class StatsControllerTest extends IntegrationTestBase {
                 .build();
         gameResultRepository.save(result);
 
-        mockMvc.perform(get("/stats/{userId}/history", userId))
+        // Act & Assert
+        mockMvc.perform(authed(get("/stats/{userId}/history", userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].winnerId").value(userId.toString()));
     }
 
     @Test
-    void getHistory_noResults_returnsEmptyList() throws Exception {
-        mockMvc.perform(get("/stats/{userId}/history", UUID.randomUUID()))
+    void getHistory_returnsEmptyList_whenNoResultsExist() throws Exception {
+        // Arrange & Act & Assert
+        mockMvc.perform(authed(get("/stats/{userId}/history", UUID.randomUUID())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void getStats_returns401_whenTokenMissing() throws Exception {
+        // Arrange & Act & Assert
+        mockMvc.perform(get("/stats/{userId}", UUID.randomUUID()))
+                .andExpect(status().isUnauthorized());
     }
 }

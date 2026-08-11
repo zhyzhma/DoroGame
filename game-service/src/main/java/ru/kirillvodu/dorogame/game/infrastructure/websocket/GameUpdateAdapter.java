@@ -17,7 +17,7 @@ public class GameUpdateAdapter implements GameUpdateNotifier {
 
     @Override
     public void notifyGameUpdated(DoroGame game) {
-        simpMessagingTemplate.convertAndSend("/topic/game/" + game.getId(),
+        simpMessagingTemplate.convertAndSend("/topic/game." + game.getId(),
                 gameUpdatePayloadConverter.convert(game));
     }
 }

@@ -38,7 +38,8 @@ class PublicInvitationServiceTest {
     private final GameConfig config = new GameConfig(FieldVariant.STANDARD, WinCheckerVariant.STANDARD, 1);
 
     @Test
-    void createPublicInvitation_savesAndReturnsInvitation() {
+    void createPublicInvitation_savesAndReturnsInvitation_whenCommandValid() {
+        // Arrange
         UUID userId = UUID.randomUUID();
         UserReadModel user = new UserReadModel(userId, "Player");
         Invitation saved = Invitation.createPublic(user, config);
@@ -46,16 +47,19 @@ class PublicInvitationServiceTest {
         when(userServiceAbstraction.getById(userId)).thenReturn(user);
         when(invitationRepository.save(any())).thenReturn(saved);
 
+        // Act
         Invitation result = publicInvitationService.createPublicInvitation(
                 new CreatePublicInvitationCommand(userId, config));
 
+        // Assert
         assertThat(result.user()).isEqualTo(user);
         assertThat(result.isPrivate()).isFalse();
         verify(invitationRepository).save(any(Invitation.class));
     }
 
     @Test
-    void acceptPublicInvitation_createsAndReturnsGame() {
+    void acceptPublicInvitation_createsAndReturnsGame_whenInvitationExists() {
+        // Arrange
         UUID invitationId = UUID.randomUUID();
         UUID acceptingUserId = UUID.randomUUID();
         UserReadModel inviter = new UserReadModel(UUID.randomUUID(), "Inviter");
@@ -69,33 +73,40 @@ class PublicInvitationServiceTest {
         when(doroGameRepository.save(game)).thenReturn(game);
         when(invitationRepository.atomicDeleteById(invitationId)).thenReturn(1);
 
+        // Act
         DoroGame result = publicInvitationService.acceptPublicInvitation(
                 new AcceptPublicInvitationCommand(invitationId, acceptingUserId));
 
+        // Assert
         assertThat(result).isSameAs(game);
         verify(invitationRepository).atomicDeleteById(invitationId);
     }
 
     @Test
-    void acceptPublicInvitation_invitationNotFound_throwsObjectNotFoundException() {
+    void acceptPublicInvitation_throwsObjectNotFoundException_whenInvitationNotFound() {
+        // Arrange
         UUID invitationId = UUID.randomUUID();
         when(invitationRepository.getById(invitationId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ObjectNotFoundException.class,
                 () -> publicInvitationService.acceptPublicInvitation(
                         new AcceptPublicInvitationCommand(invitationId, UUID.randomUUID())));
     }
 
     @Test
-    void getAllPublicInvitations_returnsOnlyPublicOnes() {
+    void getAllPublicInvitations_returnsOnlyPublicInvitations_whenMixedInvitationsExist() {
+        // Arrange
         UserReadModel user = new UserReadModel(UUID.randomUUID(), "User");
         Invitation pub = Invitation.createPublic(user, config);
         Invitation priv = Invitation.createPrivate(user, UUID.randomUUID(), config);
 
         when(invitationRepository.getAll()).thenReturn(List.of(pub, priv));
 
+        // Act
         List<Invitation> result = publicInvitationService.getAllPublicInvitations();
 
+        // Assert
         assertThat(result).hasSize(1);
         assertThat(result.getFirst().isPrivate()).isFalse();
     }
