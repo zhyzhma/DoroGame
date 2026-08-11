@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kirillvodu.dorogame.stats.application.abstractions.repositories.GameResultRepository;
 import ru.kirillvodu.dorogame.stats.application.abstractions.repositories.PlayerStatsRepository;
+import ru.kirillvodu.dorogame.stats.application.exceptions.DuplicateGameResultException;
 import ru.kirillvodu.dorogame.stats.application.exceptions.ObjectNotFoundException;
 import ru.kirillvodu.dorogame.stats.domain.model.GameResult;
 import ru.kirillvodu.dorogame.stats.domain.model.PlayerStats;
@@ -56,6 +57,21 @@ class StatsServiceTest {
         assertThat(winner.getRating()).isEqualTo(1025);
         assertThat(loser.getLosses()).isEqualTo(1);
         assertThat(loser.getRating()).isEqualTo(975);
+    }
+
+    @Test
+    void recordGameResult_skipsStatsUpdate_whenGameAlreadyRecorded() {
+        // Arrange
+        UUID gameId = UUID.randomUUID();
+        UUID winnerId = UUID.randomUUID();
+        UUID loserId = UUID.randomUUID();
+        when(gameResultRepository.save(any())).thenThrow(new DuplicateGameResultException(gameId));
+
+        // Act
+        statsService.recordGameResult(gameId, winnerId, loserId);
+
+        // Assert
+        verifyNoInteractions(playerStatsRepository);
     }
 
     @Test

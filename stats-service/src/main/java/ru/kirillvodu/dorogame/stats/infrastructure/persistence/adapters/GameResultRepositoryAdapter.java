@@ -1,7 +1,9 @@
 package ru.kirillvodu.dorogame.stats.infrastructure.persistence.adapters;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.stats.application.abstractions.repositories.GameResultRepository;
+import ru.kirillvodu.dorogame.stats.application.exceptions.DuplicateGameResultException;
 import ru.kirillvodu.dorogame.stats.domain.model.GameResult;
 import ru.kirillvodu.dorogame.stats.infrastructure.persistence.entities.GameResultEntity;
 import ru.kirillvodu.dorogame.stats.infrastructure.persistence.repositories.GameResultEntityRepository;
@@ -21,7 +23,11 @@ public class GameResultRepositoryAdapter implements GameResultRepository {
 
     @Override
     public GameResult save(GameResult result) {
-        return repository.save(GameResultEntity.fromDomain(result)).toDomain();
+        try {
+            return repository.saveAndFlush(GameResultEntity.fromDomain(result)).toDomain();
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateGameResultException(result.getGameId());
+        }
     }
 
     @Override
