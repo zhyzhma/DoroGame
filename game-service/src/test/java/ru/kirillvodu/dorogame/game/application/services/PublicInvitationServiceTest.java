@@ -5,13 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.InvitationRepository;
 import ru.kirillvodu.dorogame.game.application.abstractions.services.UserServiceAbstraction;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.AcceptPublicInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.CreatePublicInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.application.factories.games.DoroGameFactory;
 import ru.kirillvodu.dorogame.game.domain.model.*;
 import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
 import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
@@ -29,9 +27,8 @@ import static org.mockito.Mockito.*;
 class PublicInvitationServiceTest {
 
     @Mock private InvitationRepository invitationRepository;
-    @Mock private DoroGameRepository doroGameRepository;
     @Mock private UserServiceAbstraction userServiceAbstraction;
-    @Mock private DoroGameFactory doroGameFactory;
+    @Mock private InvitationAcceptanceService invitationAcceptanceService;
 
     @InjectMocks private PublicInvitationService publicInvitationService;
 
@@ -69,9 +66,7 @@ class PublicInvitationServiceTest {
 
         when(invitationRepository.getById(invitationId)).thenReturn(Optional.of(invitation));
         when(userServiceAbstraction.getById(acceptingUserId)).thenReturn(accepter);
-        when(doroGameFactory.createDoroGame(accepter, invitation)).thenReturn(game);
-        when(doroGameRepository.save(game)).thenReturn(game);
-        when(invitationRepository.atomicDeleteById(invitationId)).thenReturn(1);
+        when(invitationAcceptanceService.createGameAndDeleteInvitation(invitation, accepter)).thenReturn(game);
 
         // Act
         DoroGame result = publicInvitationService.acceptPublicInvitation(
@@ -79,7 +74,7 @@ class PublicInvitationServiceTest {
 
         // Assert
         assertThat(result).isSameAs(game);
-        verify(invitationRepository).atomicDeleteById(invitationId);
+        verify(invitationAcceptanceService).createGameAndDeleteInvitation(invitation, accepter);
     }
 
     @Test

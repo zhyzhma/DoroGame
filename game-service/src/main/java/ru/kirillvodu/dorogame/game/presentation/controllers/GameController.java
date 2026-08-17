@@ -10,6 +10,7 @@ import ru.kirillvodu.dorogame.game.application.mappers.DoroGameMapper;
 import ru.kirillvodu.dorogame.game.application.services.GameService;
 import ru.kirillvodu.dorogame.game.domain.model.Coords;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +29,10 @@ public class GameController {
         this.currentUserProvider = currentUserProvider;
     }
 
-    @GetMapping("/{id}")
-    public DoroGameDTO getGame(@PathVariable UUID id) {
-        return doroGameMapper.toDto(gameService.getGame(id));
+    @GetMapping("/finished")
+    public List<DoroGameDTO> getFinishedGames() {
+        UUID playerId = currentUserProvider.getCurrentUserId();
+        return gameService.getByUserIdAndFinishedTrue(playerId).stream().map(doroGameMapper::toDto).toList();
     }
 
     @PostMapping("/{id}/moves")

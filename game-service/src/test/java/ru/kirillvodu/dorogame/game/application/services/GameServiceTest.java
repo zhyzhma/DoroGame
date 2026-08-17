@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameEventPublisher;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameUpdateNotifier;
+import ru.kirillvodu.dorogame.game.application.abstractions.repositories.ChipMoveRepository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
@@ -25,34 +26,11 @@ import static org.mockito.Mockito.*;
 class GameServiceTest {
 
     @Mock private DoroGameRepository doroGameRepository;
+    @Mock private ChipMoveRepository chipMoveRepository;
     @Mock private GameEventPublisher gameEventPublisher;
     @Mock private GameUpdateNotifier gameUpdateNotifier;
 
     @InjectMocks private GameService gameService;
-
-    @Test
-    void getGame_returnsGame_whenGameFound() {
-        // Arrange
-        UUID id = UUID.randomUUID();
-        DoroGame game = mock(DoroGame.class);
-        when(doroGameRepository.getById(id)).thenReturn(Optional.of(game));
-
-        // Act
-        DoroGame result = gameService.getGame(id);
-
-        // Assert
-        assertThat(result).isSameAs(game);
-    }
-
-    @Test
-    void getGame_throwsObjectNotFoundException_whenGameNotFound() {
-        // Arrange
-        UUID id = UUID.randomUUID();
-        when(doroGameRepository.getById(id)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(ObjectNotFoundException.class, () -> gameService.getGame(id));
-    }
 
     @Test
     void makeMove_returnsMoveResultWithoutPublishing_whenGameNotFinished() {

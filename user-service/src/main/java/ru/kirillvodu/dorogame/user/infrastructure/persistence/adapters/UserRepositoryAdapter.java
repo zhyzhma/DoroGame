@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.user.application.abstractions.repositories.UserRepository;
 import ru.kirillvodu.dorogame.user.domain.model.User;
 import ru.kirillvodu.dorogame.user.infrastructure.persistence.entities.UserEntity;
+import ru.kirillvodu.dorogame.user.infrastructure.persistence.mappers.UserEntityMapper;
 import ru.kirillvodu.dorogame.user.infrastructure.persistence.repositories.UserEntityRepository;
 
 import java.util.List;
@@ -14,27 +15,29 @@ import java.util.UUID;
 public class UserRepositoryAdapter implements UserRepository {
 
     private final UserEntityRepository repository;
+    private final UserEntityMapper mapper;
 
-    public UserRepositoryAdapter(UserEntityRepository repository) {
+    public UserRepositoryAdapter(UserEntityRepository repository, UserEntityMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<User> getAll() {
         return repository.findAllByRemovedFalse().stream()
-                .map(UserEntity::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
     @Override
     public Optional<User> getById(UUID keycloakId) {
-        return repository.findByKeycloakId(keycloakId).map(UserEntity::toDomain);
+        return repository.findByKeycloakId(keycloakId).map(mapper::toDomain);
     }
 
     @Override
     public List<User> getByIds(List<UUID> keycloakIds) {
         return repository.findAllByKeycloakIdIn(keycloakIds).stream()
-                .map(UserEntity::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
@@ -46,8 +49,8 @@ public class UserRepositoryAdapter implements UserRepository {
                     existing.setScore(user.getScore());
                     return existing;
                 })
-                .orElse(UserEntity.fromDomain(user));
-        return repository.save(entity).toDomain();
+                .orElse(mapper.fromDomain(user));
+        return mapper.toDomain(repository.save(entity));
     }
 
     @Override
@@ -58,3 +61,4 @@ public class UserRepositoryAdapter implements UserRepository {
         });
     }
 }
+

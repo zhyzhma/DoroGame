@@ -2,9 +2,6 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.kirillvodu.dorogame.game.domain.model.GameConfig;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
 import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
 import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
 
@@ -20,7 +17,6 @@ import java.util.UUID;
 public class InvitationEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "user_id", nullable = false)
@@ -42,23 +38,4 @@ public class InvitationEntity extends BaseEntity {
 
     @Column(name = "turn", nullable = false)
     private int turn;
-
-    public Invitation toDomain() {
-        UserReadModel user = new UserReadModel(userId, userName);
-        GameConfig config = new GameConfig(fieldVariant, winCheckerVariant, turn);
-        return new Invitation(getId(), user, targetUserId, config);
-    }
-
-    public static InvitationEntity fromDomain(Invitation invitation) {
-        InvitationEntity entity = InvitationEntity.builder()
-                .userId(invitation.user().id())
-                .userName(invitation.user().name())
-                .targetUserId(invitation.targetUserId())
-                .fieldVariant(invitation.gameConfig().field())
-                .winCheckerVariant(invitation.gameConfig().winChecker())
-                .turn(invitation.gameConfig().turn())
-                .build();
-        entity.setId(invitation.id());
-        return entity;
-    }
 }

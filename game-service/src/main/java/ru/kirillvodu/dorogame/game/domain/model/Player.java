@@ -15,12 +15,13 @@ public class Player {
         this.chips = chips;
     }
 
-    public void moveChip(UUID chipId, Coords to) {
+    public Chip moveChip(UUID chipId, Coords to) {
         List<Chip> found = chips.stream().filter(x -> x.getId().equals(chipId)).toList();
         if (found.isEmpty()) {
             throw new IllegalArgumentException("Player " + user.name() + " has no chip with id " + chipId);
         }
         found.getFirst().setCoords(to);
+        return found.getFirst();
     }
 
     public boolean isCellOccupied(Coords coords) {

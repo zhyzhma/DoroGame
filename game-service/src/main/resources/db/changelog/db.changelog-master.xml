@@ -28,4 +28,27 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="006-rename-chip-entity-to-start-positions" author="kirillvodu">
+        <sqlFile path="changes/006-rename-chip-entity-to-start-positions.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <rollback>
+            <sql>DROP INDEX IF EXISTS idx_start_positions_game_id;</sql>
+            <sql>ALTER TABLE start_positions RENAME CONSTRAINT fk_start_positions_game_id TO fk_chip_entity_game_id;</sql>
+            <sql>ALTER TABLE start_positions RENAME TO chip_entity;</sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="007-add-move-counter-to-doro-games" author="kirillvodu">
+        <sqlFile path="changes/007-add-move-counter-to-doro-games.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <rollback>
+            <sql>ALTER TABLE doro_games DROP COLUMN IF EXISTS move_counter;</sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="008-create-chip-move-entity-table" author="kirillvodu">
+        <sqlFile path="changes/008-create-chip-move-entity-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <rollback>
+            <sql>DROP TABLE IF EXISTS chip_move_entity;</sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>

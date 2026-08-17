@@ -22,6 +22,6 @@ public class GameResult {
     }
 
     public static GameResult create(UUID gameId, UUID winnerId, UUID loserId) {
-        return new GameResult(null, gameId, winnerId, loserId, LocalDateTime.now());
+        return new GameResult(UUID.randomUUID(), gameId, winnerId, loserId, LocalDateTime.now());
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
@@ -14,11 +15,7 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public abstract class BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public abstract class BaseEntity implements Persistable<UUID> {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -30,4 +27,12 @@ public abstract class BaseEntity {
 
     @Column(name = "removed", nullable = false)
     private boolean removed = false;
+
+    @Override
+    public abstract UUID getId();
+
+    @Override
+    public boolean isNew() {
+        return createdAt == null;
+    }
 }

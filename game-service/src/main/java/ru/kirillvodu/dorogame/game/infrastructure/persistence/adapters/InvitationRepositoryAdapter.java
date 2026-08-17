@@ -3,7 +3,7 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.adapters;
 import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.InvitationRepository;
 import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.InvitationEntity;
+import ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers.InvitationEntityMapper;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.InvitationEntityRepository;
 
 import java.util.List;
@@ -14,26 +14,28 @@ import java.util.UUID;
 public class InvitationRepositoryAdapter implements InvitationRepository {
 
     private final InvitationEntityRepository repository;
+    private final InvitationEntityMapper mapper;
 
-    public InvitationRepositoryAdapter(InvitationEntityRepository repository) {
+    public InvitationRepositoryAdapter(InvitationEntityRepository repository, InvitationEntityMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<Invitation> getAll() {
         return repository.findAllByRemovedFalse().stream()
-                .map(InvitationEntity::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
     @Override
     public Optional<Invitation> getById(UUID id) {
-        return repository.findByIdAndRemovedFalse(id).map(InvitationEntity::toDomain);
+        return repository.findByIdAndRemovedFalse(id).map(mapper::toDomain);
     }
 
     @Override
     public Invitation save(Invitation invitation) {
-        return repository.save(InvitationEntity.fromDomain(invitation)).toDomain();
+        return mapper.toDomain(repository.save(mapper.fromDomain(invitation)));
     }
 
     @Override

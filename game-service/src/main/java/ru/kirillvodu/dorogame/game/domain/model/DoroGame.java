@@ -1,5 +1,6 @@
 package ru.kirillvodu.dorogame.game.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.kirillvodu.dorogame.game.domain.model.field.Field;
 import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
@@ -17,6 +18,32 @@ public class DoroGame {
     private boolean isFinished;
     private int winner;
     private int turn;
+    private int moveCounter;
+
+    public DoroGame(UUID id,
+                    UserReadModel player1,
+                    UserReadModel player2,
+                    Field field,
+                    WinChecker winChecker,
+                    List<Chip> chipsPlayer1,
+                    List<Chip> chipsPlayer2,
+                    boolean isFinished,
+                    int winner,
+                    int turn,
+                    int moveCounter) {
+        if (turn > 2 || turn < 1) {
+            throw new IllegalArgumentException("Invalid turn: must be 1 or 2");
+        }
+        this.id = id;
+        this.player1 = new Player(player1, chipsPlayer1);
+        this.player2 = new Player(player2, chipsPlayer2);
+        this.field = field;
+        this.winChecker = winChecker;
+        this.isFinished = isFinished;
+        this.winner = winner;
+        this.turn = turn;
+        this.moveCounter = moveCounter;
+    }
 
     public DoroGame(UUID id,
                     UserReadModel player1,
@@ -26,17 +53,7 @@ public class DoroGame {
                     List<Chip> chipsPlayer1,
                     List<Chip> chipsPlayer2,
                     int turn) {
-        if (turn > 2 || turn < 1) {
-            throw new IllegalArgumentException("Invalid turn: must be 1 or 2");
-        }
-        this.id = id;
-        this.player1 = new Player(player1, chipsPlayer1);
-        this.player2 = new Player(player2, chipsPlayer2);
-        this.field = field;
-        this.winChecker = winChecker;
-        this.isFinished = false;
-        this.winner = 0;
-        this.turn = turn;
+        this(id, player1, player2, field, winChecker, chipsPlayer1, chipsPlayer2, false, 0, turn, 0);
     }
 
     public DoroGame(UserReadModel player1,
@@ -46,30 +63,10 @@ public class DoroGame {
                     List<Chip> chipsPlayer1,
                     List<Chip> chipsPlayer2,
                     int turn) {
-        this(null, player1, player2, field, winChecker, chipsPlayer1, chipsPlayer2, turn);
+        this(null, player1, player2, field, winChecker, chipsPlayer1, chipsPlayer2, false, 0, turn, 0);
     }
 
-    public DoroGame(UUID id,
-                    UserReadModel player1,
-                    UserReadModel player2,
-                    Field field,
-                    WinChecker winChecker,
-                    List<Chip> chipsPlayer1,
-                    List<Chip> chipsPlayer2,
-                    int turn,
-                    boolean isFinished,
-                    int winner) {
-        this.id = id;
-        this.player1 = new Player(player1, chipsPlayer1);
-        this.player2 = new Player(player2, chipsPlayer2);
-        this.field = field;
-        this.winChecker = winChecker;
-        this.isFinished = isFinished;
-        this.winner = winner;
-        this.turn = turn;
-    }
-
-    public void makeMove(UUID playerId, UUID chipId, Coords coords) {
+    public Chip makeMove(UUID playerId, UUID chipId, Coords coords) {
         if (isFinished) {
             throw new IllegalStateException("Game is finished");
         }
@@ -87,7 +84,8 @@ public class DoroGame {
             throw new IllegalStateException("Coordinates not reachable");
         }
 
-        current.moveChip(chipId, coords);
+        Chip chip = current.moveChip(chipId, coords);
+        moveCounter++;
 
         if (winChecker.checkWin(player1.getChips().stream().map(Chip::getCoords).toList())) {
             isFinished = true;
@@ -100,5 +98,6 @@ public class DoroGame {
         } else {
             turn = (turn == 1) ? 2 : 1;
         }
+        return chip;
     }
 }

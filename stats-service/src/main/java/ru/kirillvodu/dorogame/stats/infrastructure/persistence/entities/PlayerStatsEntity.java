@@ -2,7 +2,6 @@ package ru.kirillvodu.dorogame.stats.infrastructure.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.kirillvodu.dorogame.stats.domain.model.PlayerStats;
 
 import java.util.UUID;
 
@@ -15,6 +14,10 @@ import java.util.UUID;
 @Builder
 public class PlayerStatsEntity extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID userId;
 
@@ -26,18 +29,4 @@ public class PlayerStatsEntity extends BaseEntity {
 
     @Column(name = "rating", nullable = false)
     private int rating;
-
-    public PlayerStats toDomain() {
-        return new PlayerStats(userId, wins, losses, rating);
-    }
-
-    public static PlayerStatsEntity fromDomain(PlayerStats stats) {
-        PlayerStatsEntity entity = PlayerStatsEntity.builder()
-                .userId(stats.getUserId())
-                .wins(stats.getWins())
-                .losses(stats.getLosses())
-                .rating(stats.getRating())
-                .build();
-        return entity;
-    }
 }

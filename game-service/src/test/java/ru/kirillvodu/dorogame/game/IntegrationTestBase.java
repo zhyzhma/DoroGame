@@ -14,6 +14,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
+import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.ChipMoveEntityRepository;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.DoroGameEntityRepository;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.InvitationEntityRepository;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.OutboxEventEntityRepository;
@@ -85,12 +86,14 @@ public abstract class IntegrationTestBase {
     @Autowired protected DoroGameEntityRepository doroGameRepository;
     @Autowired protected InvitationEntityRepository invitationRepository;
     @Autowired protected OutboxEventEntityRepository outboxRepository;
+    @Autowired protected ChipMoveEntityRepository chipMoveEntityRepository;
 
     protected String authToken;
 
     @BeforeEach
     void cleanDatabase() {
         outboxRepository.deleteAll();
+        chipMoveEntityRepository.deleteAll();
         doroGameRepository.deleteAll();
         invitationRepository.deleteAll();
     }

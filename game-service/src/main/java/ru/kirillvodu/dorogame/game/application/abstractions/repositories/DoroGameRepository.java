@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface DoroGameRepository {
     List<DoroGame> getAll();
+    List<DoroGame> getByUserIdAndFinishedTrue(UUID userId);
     Optional<DoroGame> getById(UUID id);
     DoroGame save(DoroGame game);
     void deleteById(UUID id);
