@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.kirillvodu.dorogame.game.IntegrationTestBase;
 import ru.kirillvodu.dorogame.game.application.abstractions.security.CurrentUserProvider;
 import ru.kirillvodu.dorogame.game.application.abstractions.services.UserServiceAbstraction;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.UUID;
 

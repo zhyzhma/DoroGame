@@ -6,9 +6,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import ru.kirillvodu.dorogame.game.domain.model.*;
-import ru.kirillvodu.dorogame.game.domain.model.field.Field;
-import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.Field;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.List;
 import java.util.UUID;

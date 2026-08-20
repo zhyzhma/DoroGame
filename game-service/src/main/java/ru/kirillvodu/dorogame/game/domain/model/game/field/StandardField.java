@@ -1,8 +1,7 @@
-package ru.kirillvodu.dorogame.game.domain.model.field;
+package ru.kirillvodu.dorogame.game.domain.model.game.field;
 
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
-import ru.kirillvodu.dorogame.game.domain.model.Player;
-import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.Player;
 
 import java.util.ArrayList;
 import java.util.List;

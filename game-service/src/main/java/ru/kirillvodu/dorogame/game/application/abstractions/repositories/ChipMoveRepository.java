@@ -1,12 +1,8 @@
 package ru.kirillvodu.dorogame.game.application.abstractions.repositories;
 
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
-import ru.kirillvodu.dorogame.game.domain.model.ChipMove;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ChipMoveRepository {

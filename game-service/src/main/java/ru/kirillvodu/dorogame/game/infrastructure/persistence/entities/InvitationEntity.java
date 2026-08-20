@@ -2,8 +2,8 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
-import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.FieldVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinCheckerVariant;
 
 import java.util.UUID;
 

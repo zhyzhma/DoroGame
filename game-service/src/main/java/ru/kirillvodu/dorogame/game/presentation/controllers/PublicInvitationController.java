@@ -10,9 +10,9 @@ import ru.kirillvodu.dorogame.game.application.contracts.commands.CreatePublicIn
 import ru.kirillvodu.dorogame.game.application.mappers.DoroGameMapper;
 import ru.kirillvodu.dorogame.game.application.mappers.InvitationMapper;
 import ru.kirillvodu.dorogame.game.application.services.PublicInvitationService;
-import ru.kirillvodu.dorogame.game.domain.model.GameConfig;
-import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
-import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.GameConfig;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.FieldVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinCheckerVariant;
 
 import java.util.List;
 import java.util.UUID;

@@ -6,9 +6,9 @@ import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGam
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.InvitationRepository;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
 import ru.kirillvodu.dorogame.game.application.factories.games.DoroGameFactory;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 @Service
 public class InvitationAcceptanceService {

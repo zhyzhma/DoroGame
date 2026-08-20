@@ -1,7 +1,7 @@
 package ru.kirillvodu.dorogame.game.infrastructure.websocket.converters;
 
 import org.springframework.stereotype.Component;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 import ru.kirillvodu.dorogame.game.infrastructure.websocket.DTO.ChipsPositionsDTO;
 
 @Component

@@ -5,7 +5,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.abstractions.services.UserServiceAbstraction;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 import ru.kirillvodu.grpc.user.GetUserByIdRequest;
 import ru.kirillvodu.grpc.user.GetUserByIdResponse;
 import ru.kirillvodu.grpc.user.GetUsersByIdsRequest;

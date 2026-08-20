@@ -10,9 +10,12 @@ import ru.kirillvodu.dorogame.game.application.abstractions.services.UserService
 import ru.kirillvodu.dorogame.game.application.contracts.commands.AcceptPublicInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.CreatePublicInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.*;
-import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
-import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.GameConfig;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.FieldVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.List;
 import java.util.Optional;

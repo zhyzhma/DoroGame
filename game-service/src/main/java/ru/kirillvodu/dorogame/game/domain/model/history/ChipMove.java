@@ -1,4 +1,6 @@
-package ru.kirillvodu.dorogame.game.domain.model;
+package ru.kirillvodu.dorogame.game.domain.model.history;
+
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
 
 import java.util.UUID;
 

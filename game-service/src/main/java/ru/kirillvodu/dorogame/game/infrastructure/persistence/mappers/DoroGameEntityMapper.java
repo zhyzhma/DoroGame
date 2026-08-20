@@ -1,12 +1,12 @@
 package ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers;
 
 import org.springframework.stereotype.Component;
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
-import ru.kirillvodu.dorogame.game.domain.model.field.Field;
-import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.Field;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinChecker;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipMoveEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.DoroGameEntity;

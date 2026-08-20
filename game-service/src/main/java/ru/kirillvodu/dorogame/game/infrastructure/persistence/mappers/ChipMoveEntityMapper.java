@@ -1,9 +1,9 @@
 package ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers;
 
 import org.springframework.stereotype.Component;
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
-import ru.kirillvodu.dorogame.game.domain.model.ChipMove;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipMoveEntity;
 

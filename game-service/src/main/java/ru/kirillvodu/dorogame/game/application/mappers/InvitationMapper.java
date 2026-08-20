@@ -2,7 +2,7 @@ package ru.kirillvodu.dorogame.game.application.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.contracts.DTO.read.InvitationReadDTO;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
 
 @Component
 public class InvitationMapper {

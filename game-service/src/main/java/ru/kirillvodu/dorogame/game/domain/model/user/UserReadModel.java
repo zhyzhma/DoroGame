@@ -1,4 +1,4 @@
-package ru.kirillvodu.dorogame.game.domain.model;
+package ru.kirillvodu.dorogame.game.domain.model.user;
 
 import java.util.UUID;
 

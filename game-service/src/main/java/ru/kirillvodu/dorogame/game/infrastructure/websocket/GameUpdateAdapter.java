@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameUpdateNotifier;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 import ru.kirillvodu.dorogame.game.infrastructure.websocket.converters.GameUpdatePayloadConverter;
 
 @Component

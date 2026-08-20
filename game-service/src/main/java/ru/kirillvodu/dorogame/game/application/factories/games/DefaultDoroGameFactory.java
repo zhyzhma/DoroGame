@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.factories.fields.FieldFactory;
 import ru.kirillvodu.dorogame.game.application.factories.winCheckers.WinCheckerFactory;
 import ru.kirillvodu.dorogame.game.application.properties.StartingCoordsProperties;
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
-import ru.kirillvodu.dorogame.game.domain.model.enums.FieldVariant;
-import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.FieldVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinCheckerVariant;
 
 import java.util.List;
 import java.util.Map;

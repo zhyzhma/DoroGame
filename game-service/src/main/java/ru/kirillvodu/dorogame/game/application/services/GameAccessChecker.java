@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 
 import java.util.UUID;
 

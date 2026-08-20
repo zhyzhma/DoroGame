@@ -3,8 +3,7 @@ package ru.kirillvodu.dorogame.game.application.mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.contracts.DTO.read.DoroGameDTO;
-import ru.kirillvodu.dorogame.game.application.contracts.DTO.read.GameRecordDTO;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 
 @Component
 public class DoroGameMapper {

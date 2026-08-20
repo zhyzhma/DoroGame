@@ -12,8 +12,8 @@ import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGam
 import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 
 import java.util.Optional;
 import java.util.UUID;

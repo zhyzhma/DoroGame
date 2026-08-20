@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameEventPublisher;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.OutboxEventEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.OutboxEventEntityRepository;
 

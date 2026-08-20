@@ -12,9 +12,14 @@ import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGam
 import ru.kirillvodu.dorogame.game.application.contracts.commands.GetGameRecordCommand;
 import ru.kirillvodu.dorogame.game.application.exceptions.GameNotFinishedException;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.*;
-import ru.kirillvodu.dorogame.game.domain.model.field.Field;
-import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.Field;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
+import ru.kirillvodu.dorogame.game.domain.model.history.GameRecord;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.List;
 import java.util.Optional;

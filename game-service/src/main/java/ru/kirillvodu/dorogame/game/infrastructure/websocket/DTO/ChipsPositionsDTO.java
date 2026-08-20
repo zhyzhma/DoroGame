@@ -1,6 +1,6 @@
 package ru.kirillvodu.dorogame.game.infrastructure.websocket.DTO;
 
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
 
 import java.util.List;
 

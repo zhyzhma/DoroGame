@@ -1,6 +1,7 @@
-package ru.kirillvodu.dorogame.game.domain.model;
+package ru.kirillvodu.dorogame.game.domain.model.invitation;
 
 import lombok.Getter;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.ArrayList;
 import java.util.List;

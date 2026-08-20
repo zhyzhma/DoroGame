@@ -1,6 +1,6 @@
 package ru.kirillvodu.dorogame.game.application.abstractions.services;
 
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.List;
 import java.util.UUID;

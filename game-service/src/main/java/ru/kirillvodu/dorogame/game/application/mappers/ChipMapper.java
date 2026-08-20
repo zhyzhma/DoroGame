@@ -2,7 +2,7 @@ package ru.kirillvodu.dorogame.game.application.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.kirillvodu.dorogame.game.application.contracts.DTO.read.ChipDTO;
-import ru.kirillvodu.dorogame.game.domain.model.Chip;
+import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
 
 import java.util.List;
 

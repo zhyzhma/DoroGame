@@ -3,7 +3,7 @@ package ru.kirillvodu.dorogame.game.application.properties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
 
 import java.util.ArrayList;
 import java.util.List;

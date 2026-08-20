@@ -7,9 +7,9 @@ import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGam
 import ru.kirillvodu.dorogame.game.application.contracts.commands.GetGameRecordCommand;
 import ru.kirillvodu.dorogame.game.application.exceptions.GameNotFinishedException;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.ChipMove;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
-import ru.kirillvodu.dorogame.game.domain.model.GameRecord;
+import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.history.GameRecord;
 
 import java.util.List;
 

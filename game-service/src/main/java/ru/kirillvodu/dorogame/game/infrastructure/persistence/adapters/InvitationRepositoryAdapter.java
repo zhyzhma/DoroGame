@@ -2,7 +2,7 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.adapters;
 
 import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.InvitationRepository;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers.InvitationEntityMapper;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.repositories.InvitationEntityRepository;
 

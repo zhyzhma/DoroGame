@@ -1,6 +1,6 @@
 package ru.kirillvodu.dorogame.game.application.abstractions.repositories;
 
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
 
 import java.util.List;
 import java.util.Optional;

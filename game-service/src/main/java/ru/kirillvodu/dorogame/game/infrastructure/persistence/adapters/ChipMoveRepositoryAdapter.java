@@ -3,7 +3,7 @@ package ru.kirillvodu.dorogame.game.infrastructure.persistence.adapters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.ChipMoveRepository;
-import ru.kirillvodu.dorogame.game.domain.model.ChipMove;
+import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.ChipMoveEntity;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers.ChipMoveEntityMapper;

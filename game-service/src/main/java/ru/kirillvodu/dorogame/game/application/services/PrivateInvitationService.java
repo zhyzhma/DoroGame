@@ -7,9 +7,9 @@ import ru.kirillvodu.dorogame.game.application.abstractions.services.UserService
 import ru.kirillvodu.dorogame.game.application.contracts.commands.AcceptPrivateInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.CreatePrivateInvitationCommand;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
-import ru.kirillvodu.dorogame.game.domain.model.DoroGame;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.DoroGame;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 
 import java.util.List;
 import java.util.UUID;

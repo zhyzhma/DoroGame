@@ -1,9 +1,9 @@
 package ru.kirillvodu.dorogame.game.infrastructure.persistence.mappers;
 
 import org.springframework.stereotype.Component;
-import ru.kirillvodu.dorogame.game.domain.model.GameConfig;
-import ru.kirillvodu.dorogame.game.domain.model.Invitation;
-import ru.kirillvodu.dorogame.game.domain.model.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.GameConfig;
+import ru.kirillvodu.dorogame.game.domain.model.invitation.Invitation;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
 import ru.kirillvodu.dorogame.game.infrastructure.persistence.entities.InvitationEntity;
 
 @Component

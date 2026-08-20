@@ -1,9 +1,9 @@
-package ru.kirillvodu.dorogame.game.domain.model;
+package ru.kirillvodu.dorogame.game.domain.model.game;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.kirillvodu.dorogame.game.domain.model.field.Field;
-import ru.kirillvodu.dorogame.game.domain.model.winchecker.WinChecker;
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.field.Field;
+import ru.kirillvodu.dorogame.game.domain.model.game.winchecker.WinChecker;
 
 import java.util.List;
 import java.util.UUID;

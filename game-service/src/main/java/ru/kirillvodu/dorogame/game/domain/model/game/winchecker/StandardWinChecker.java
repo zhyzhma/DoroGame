@@ -1,7 +1,6 @@
-package ru.kirillvodu.dorogame.game.domain.model.winchecker;
+package ru.kirillvodu.dorogame.game.domain.model.game.winchecker;
 
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
-import ru.kirillvodu.dorogame.game.domain.model.enums.WinCheckerVariant;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
 
 import java.util.Comparator;
 import java.util.List;

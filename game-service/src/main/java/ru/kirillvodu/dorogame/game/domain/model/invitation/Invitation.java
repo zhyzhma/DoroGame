@@ -1,4 +1,7 @@
-package ru.kirillvodu.dorogame.game.domain.model;
+package ru.kirillvodu.dorogame.game.domain.model.invitation;
+
+import ru.kirillvodu.dorogame.game.domain.model.user.UserReadModel;
+import ru.kirillvodu.dorogame.game.domain.model.game.GameConfig;
 
 import java.util.UUID;
 

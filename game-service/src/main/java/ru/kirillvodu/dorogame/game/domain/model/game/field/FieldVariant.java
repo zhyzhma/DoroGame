@@ -1,4 +1,4 @@
-package ru.kirillvodu.dorogame.game.domain.model.enums;
+package ru.kirillvodu.dorogame.game.domain.model.game.field;
 
 import java.util.Arrays;
 

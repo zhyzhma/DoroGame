@@ -8,7 +8,7 @@ import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveComman
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
 import ru.kirillvodu.dorogame.game.application.mappers.DoroGameMapper;
 import ru.kirillvodu.dorogame.game.application.services.GameService;
-import ru.kirillvodu.dorogame.game.domain.model.Coords;
+import ru.kirillvodu.dorogame.game.domain.model.game.Coords;
 
 import java.util.List;
 import java.util.UUID;
