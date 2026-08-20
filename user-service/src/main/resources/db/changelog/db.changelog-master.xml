@@ -8,4 +8,8 @@
         <sqlFile path="changes/001-create-users-table.sql" relativeToChangelogFile="true" splitStatements="true"/>
     </changeSet>
 
+    <changeSet id="002-add-avatar-key-delete-score" author="kirillvodu">
+        <sqlFile path="changes/002-add-avatar-key-delete-score.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
 </databaseChangeLog>

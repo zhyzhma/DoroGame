@@ -1,0 +1,3 @@
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS avatar_key VARCHAR(255),
+    DROP COLUMN IF EXISTS score;

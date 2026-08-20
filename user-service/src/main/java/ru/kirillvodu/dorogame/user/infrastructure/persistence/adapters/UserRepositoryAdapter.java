@@ -46,7 +46,7 @@ public class UserRepositoryAdapter implements UserRepository {
         UserEntity entity = repository.findByKeycloakId(user.getId())
                 .map(existing -> {
                     existing.setName(user.getName());
-                    existing.setScore(user.getScore());
+                    existing.setAvatarKey(user.getAvatarKey());
                     return existing;
                 })
                 .orElse(mapper.fromDomain(user));

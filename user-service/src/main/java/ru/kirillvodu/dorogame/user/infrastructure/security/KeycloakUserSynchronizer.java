@@ -26,7 +26,6 @@ public class KeycloakUserSynchronizer implements UserSynchronizer {
                         UserEntity.builder()
                                 .keycloakId(keycloakId)
                                 .name(name != null ? name : "Player")
-                                .score(0)
                                 .build()));
     }
 }

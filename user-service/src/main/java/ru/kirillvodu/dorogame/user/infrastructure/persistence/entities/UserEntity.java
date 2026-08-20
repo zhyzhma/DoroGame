@@ -3,6 +3,7 @@ package ru.kirillvodu.dorogame.user.infrastructure.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +21,6 @@ public class UserEntity extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "score", nullable = false)
-    private int score;
+    @Column(name = "avatar_key")
+    private String avatarKey;
 }

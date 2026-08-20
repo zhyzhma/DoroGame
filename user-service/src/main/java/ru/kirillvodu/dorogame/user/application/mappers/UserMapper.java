@@ -8,6 +8,6 @@ import ru.kirillvodu.dorogame.user.domain.model.User;
 public class UserMapper {
 
     public UserReadDTO toDto(User user) {
-        return new UserReadDTO(user.getId(), user.getName(), user.getScore());
+        return new UserReadDTO(user.getId(), user.getName(), user.getAvatarKey());
     }
 }

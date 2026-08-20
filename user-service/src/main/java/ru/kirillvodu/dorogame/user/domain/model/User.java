@@ -3,6 +3,7 @@ package ru.kirillvodu.dorogame.user.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -11,17 +12,17 @@ public class User {
     @Setter
     private String name;
     @Setter
-    private int score;
+    private String avatarKey;
 
-    public User(UUID id, String name, int score) {
+    public User(UUID id, String name, String avatarKey) {
         this.id = id;
         this.name = name;
-        this.score = score;
+        this.avatarKey = avatarKey;
     }
 
-    public User(String name, int score) {
-        this.id = null;
+    public User(UUID id, String name) {
+        this.id = id;
         this.name = name;
-        this.score = score;
+        this.avatarKey = null;
     }
 }

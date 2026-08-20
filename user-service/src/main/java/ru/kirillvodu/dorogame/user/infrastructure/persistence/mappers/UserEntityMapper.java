@@ -8,14 +8,14 @@ import ru.kirillvodu.dorogame.user.infrastructure.persistence.entities.UserEntit
 public class UserEntityMapper {
 
     public User toDomain(UserEntity entity) {
-        return new User(entity.getKeycloakId(), entity.getName(), entity.getScore());
+        return new User(entity.getKeycloakId(), entity.getName(), entity.getAvatarKey());
     }
 
     public UserEntity fromDomain(User user) {
         return UserEntity.builder()
                 .keycloakId(user.getId())
                 .name(user.getName())
-                .score(user.getScore())
+                .avatarKey(user.getAvatarKey())
                 .build();
     }
 }
