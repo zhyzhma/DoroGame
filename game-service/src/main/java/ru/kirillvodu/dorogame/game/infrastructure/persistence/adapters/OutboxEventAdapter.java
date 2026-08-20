@@ -38,7 +38,6 @@ public class OutboxEventAdapter implements GameEventPublisher {
                     .eventType("game.finished")
                     .aggregateId(game.getId().toString())
                     .payload(objectMapper.writeValueAsString(payload))
-                    .sent(false)
                     .build();
             repository.save(event);
         } catch (JsonProcessingException e) {

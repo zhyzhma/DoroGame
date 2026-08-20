@@ -26,8 +26,4 @@ public class OutboxEventEntity extends BaseEntity {
 
     @Column(name = "payload", nullable = false, columnDefinition = "TEXT")
     private String payload;
-
-    @Column(name = "sent", nullable = false)
-    @Builder.Default
-    private boolean sent = false;
 }

@@ -51,4 +51,11 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="009-drop-sent-from-outbox-events" author="kirillvodu">
+        <sqlFile path="changes/009-drop-sent-from-outbox-events.sql" relativeToChangelogFile="true" splitStatements="true"/>
+        <rollback>
+            <sql>ALTER TABLE outbox_events ADD COLUMN sent BOOLEAN NOT NULL DEFAULT FALSE;</sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
