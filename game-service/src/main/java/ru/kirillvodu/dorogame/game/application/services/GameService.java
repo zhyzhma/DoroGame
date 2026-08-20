@@ -1,13 +1,18 @@
 package ru.kirillvodu.dorogame.game.application.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameEventPublisher;
 import ru.kirillvodu.dorogame.game.application.abstractions.events.GameUpdateNotifier;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.ChipMoveRepository;
 import ru.kirillvodu.dorogame.game.application.abstractions.repositories.DoroGameRepository;
 import ru.kirillvodu.dorogame.game.application.contracts.commands.MakeMoveCommand;
 import ru.kirillvodu.dorogame.game.application.contracts.results.MoveResult;
+import ru.kirillvodu.dorogame.game.application.events.GameUpdatedEvent;
 import ru.kirillvodu.dorogame.game.application.exceptions.ObjectNotFoundException;
 import ru.kirillvodu.dorogame.game.domain.model.game.Chip;
 import ru.kirillvodu.dorogame.game.domain.model.history.ChipMove;
@@ -27,11 +32,14 @@ public class GameService {
     private GameEventPublisher gameEventPublisher;
     @Autowired
     private GameUpdateNotifier gameUpdateNotifier;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public List<DoroGame> getByUserIdAndFinishedTrue(UUID userId) {
         return doroGameRepository.getByUserIdAndFinishedTrue(userId);
     }
 
+    @Transactional
     public MoveResult makeMove(MakeMoveCommand command) {
         DoroGame game = doroGameRepository.getById(command.gameId())
                 .orElseThrow(() -> new ObjectNotFoundException(command.gameId(), "DoroGame"));
@@ -41,12 +49,17 @@ public class GameService {
         chipMoveRepository.save(new ChipMove(chip, game.getMoveCounter()));
         doroGameRepository.save(game);
 
-        gameUpdateNotifier.notifyGameUpdated(game);
+        applicationEventPublisher.publishEvent(new GameUpdatedEvent(game));
 
         if (game.isFinished()) {
             gameEventPublisher.publishGameFinished(game);
         }
 
         return new MoveResult(game.isFinished(), game.getWinner(), game.getTurn());
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onGameUpdated(GameUpdatedEvent event) {
+        gameUpdateNotifier.notifyGameUpdated(event.game());
     }
 }
